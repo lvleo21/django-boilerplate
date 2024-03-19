@@ -28,7 +28,9 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-EXTERNAL_APPS = []
+EXTERNAL_APPS = [
+    "debug_toolbar",
+]
 
 PROJECT_APPS = [
     "apps.core",
