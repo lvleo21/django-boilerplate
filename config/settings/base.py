@@ -29,7 +29,9 @@ DJANGO_APPS = [
 ]
 
 EXTERNAL_APPS = [
+    "rest_framework",
     "debug_toolbar",
+    "drf_yasg",
 ]
 
 PROJECT_APPS = [
