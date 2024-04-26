@@ -9,7 +9,7 @@ from drf_yasg import openapi
 
 
 urlpatterns = [
-    #* Admin
+    # Admin
     path("admin/", admin.site.urls),
 ]
 
@@ -28,6 +28,14 @@ if settings.DEBUG:
 
     urlpatterns += [
         path("__debug__/", include("debug_toolbar.urls")),
-        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+        path(
+            "swagger/",
+            schema_view.with_ui("swagger", cache_timeout=0),
+            name="schema-swagger-ui",
+        ),
+        path(
+            "redoc/",
+            schema_view.with_ui("redoc", cache_timeout=0),
+            name="schema-redoc"
+        ),
     ]
