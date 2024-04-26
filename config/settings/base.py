@@ -15,9 +15,11 @@ SECRET_KEY = env(
 
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+VERSION = "Not Implemented"
 
-#! Application definition
+ENVIRONMENT_FLAG = env("ENVIRONMENT_FLAG", default=False)
+
+ALLOWED_HOSTS = []
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -39,8 +41,6 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = PROJECT_APPS + DJANGO_APPS + EXTERNAL_APPS
-
-#! End Application definition
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -65,6 +65,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.core.context_processors.environment_flag",
             ],
         },
     },

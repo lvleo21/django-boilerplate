@@ -13,7 +13,7 @@ DATABASES = {
 }
 
 #* Django Debug Toolbar
-INTERNAL_IPS = [    
+INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
@@ -36,7 +36,7 @@ SWAGGER_OPENAPI_CONTACT = env("SWAGGER_OPENAPI_CONTACT", default="Insert contact
 
 SWAGGER_OPENAPI_LICENSE = env("SWAGGER_OPENAPI_LICENSE", default="Insert license")
 
-#* Rest Framework
+# Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
