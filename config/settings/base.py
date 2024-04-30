@@ -15,7 +15,9 @@ SECRET_KEY = env(
 
 DEBUG = env("DEBUG")
 
-VERSION = "Not Implemented"
+VERSION = "VERSION"
+
+PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 
 ENVIRONMENT_FLAG = env("ENVIRONMENT_FLAG", default=False)
 
@@ -105,3 +107,5 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "core.Account"
