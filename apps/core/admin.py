@@ -1,5 +1,5 @@
-from django.utils.html import format_html
 from django.contrib import admin
+from django.conf import settings
 from django.contrib.auth.admin import UserAdmin
 
 from apps.core.models import Account
@@ -44,3 +44,16 @@ class AccountAdmin(UserAdmin):
     list_editable = ["email_is_confirmed"]
     search_fields = ["email"]
     ordering = ["email"]
+
+
+# Custom admin name
+
+title = settings.PROJECT_NAME
+full_title = "{} ({} - {})".format(
+    title,
+    getattr(settings, "VERSION", "v0.1.0"),
+    getattr(settings, "ENVIRONMENT", "local").upper(),
+)
+admin.site.site_title = "Django Admin"
+admin.site.site_header = full_title
+admin.site.index_title = title

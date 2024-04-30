@@ -15,7 +15,9 @@ SECRET_KEY = env(
 
 DEBUG = env("DEBUG")
 
-VERSION = "Not Implemented"
+VERSION = "VERSION"
+
+PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 
 ENVIRONMENT_FLAG = env("ENVIRONMENT_FLAG", default=False)
 
