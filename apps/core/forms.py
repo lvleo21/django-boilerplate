@@ -5,7 +5,6 @@ from apps.core.models import Account
 
 
 class CustomUserCreationForm(UserCreationForm):
-
     name = forms.CharField(max_length=60)
 
     class Meta:
@@ -13,7 +12,6 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ["email", "username", "name", "password1", "password2"]
 
     def save(self, commit=True):
-
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
 

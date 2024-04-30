@@ -20,7 +20,7 @@ class BaseModel(models.Model):
 
 class Account(BaseModel, AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
-        _("Username"),
+        _("Nome de usuário"),
         max_length=15,
         unique=True,
         help_text=_(
