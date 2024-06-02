@@ -12,12 +12,12 @@ DATABASES = {
     }
 }
 
-#* Django Debug Toolbar
+# Django Debug Toolbar
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-#* Swagger
+# Swagger
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Basic': {
@@ -25,10 +25,6 @@ SWAGGER_SETTINGS = {
         }
     }
 }
-
-SWAGGER_OPENAPI_TITLE = env("SWAGGER_OPENAPI_TITLE", default="Insert title")
-
-SWAGGER_OPENAPI_VERSION = env("SWAGGER_OPENAPI_VERSION", default="Insert version")
 
 SWAGGER_OPENAPI_TERM_OF_SERVICE = env("SWAGGER_OPENAPI_TERM_OF_SERVICE", default="Insert term")
 

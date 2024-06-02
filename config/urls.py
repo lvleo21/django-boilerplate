@@ -10,14 +10,14 @@ from drf_yasg import openapi
 
 urlpatterns = [
     # Admin
-    path("admin/", admin.site.urls),
+    path("staff/", admin.site.urls),
 ]
 
 if settings.DEBUG:
     schema_view = get_schema_view(
         openapi.Info(
-            title=settings.SWAGGER_OPENAPI_TITLE,
-            default_version=settings.SWAGGER_OPENAPI_VERSION,
+            title=settings.PROJECT_NAME,
+            default_version=f"v{getattr(settings, 'VERSION', '0.1.0')}",
             terms_of_service="https://www.example.com/terms/",
             contact=openapi.Contact(email=settings.SWAGGER_OPENAPI_CONTACT),
             license=openapi.License(name=settings.SWAGGER_OPENAPI_LICENSE),

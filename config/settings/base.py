@@ -13,9 +13,9 @@ SECRET_KEY = env(
     "SECRET_KEY",
 )
 
-DEBUG = env("DEBUG")
+DEBUG = env("DEBUG", default=True, cast=bool)
 
-VERSION = "VERSION"
+VERSION = "0.1.0"
 
 PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 

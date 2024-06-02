@@ -49,10 +49,9 @@ class AccountAdmin(UserAdmin):
 # Custom admin name
 
 title = settings.PROJECT_NAME
-full_title = "{} ({} - {})".format(
+full_title = "{} (v{})".format(
     title,
-    getattr(settings, "VERSION", "v0.1.0"),
-    getattr(settings, "ENVIRONMENT", "local").upper(),
+    getattr(settings, "VERSION", "0.1.0"),
 )
 admin.site.site_title = "Django Admin"
 admin.site.site_header = full_title
