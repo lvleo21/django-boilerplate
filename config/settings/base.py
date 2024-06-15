@@ -9,9 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(os.path.join(BASE_DIR, "settings/.env"))
 
-SECRET_KEY = env(
-    "SECRET_KEY",
-)
+SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env("DEBUG", default=True, cast=bool)
 
