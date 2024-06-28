@@ -15,6 +15,8 @@ DEBUG = env("DEBUG", default=True, cast=bool)
 
 VERSION = "0.1.0"
 
+ENVIRONMENT = env("ENVIRONMENT", default="development")
+
 PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 
 ENVIRONMENT_FLAG = env("ENVIRONMENT_FLAG", default=False)
