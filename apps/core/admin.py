@@ -80,7 +80,7 @@ class AccountAdmin(UserAdmin, BaseAdmin):
                 "classes": ("wide",),
                 "fields": (
                     "email",
-                    "username"
+                    "username",
                     "password1",
                     "password2",
                 ),
