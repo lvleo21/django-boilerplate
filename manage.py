@@ -3,16 +3,15 @@
 import os
 import sys
 
-from config.settings import settings
+from config.settings.base import ENVIRONMENT
 
 
 def main():
     """Run administrative tasks."""
-
-    if settings.DEBUG:
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
-    else:
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.production")
+    os.environ.setdefault(
+        "DJANGO_SETTINGS_MODULE",
+        f"config.settings.{ENVIRONMENT}"
+    )
 
     try:
         from django.core.management import execute_from_command_line
