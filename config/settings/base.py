@@ -3,6 +3,7 @@ import environ
 from pathlib import Path
 
 from django.templatetags.static import static
+from django.utils.translation import gettext_lazy as _
 
 
 env = environ.Env(DEBUG=(bool, False))
@@ -17,7 +18,7 @@ DEBUG = env("DEBUG", default=True, cast=bool)
 
 VERSION = "0.1.0"
 
-ENVIRONMENT = env("ENVIRONMENT", default="local")
+ENVIRONMENT = env("ENVIRONMENT", default="development")
 
 PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 
@@ -35,6 +36,7 @@ DJANGO_APPS = [
 EXTERNAL_APPS = [
     "rest_framework",
     "debug_toolbar",
+    "rosetta",
 
     # Swagger
     "drf_yasg",
@@ -58,6 +60,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
@@ -98,9 +101,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-us"
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "locale"),
+]
 
-TIME_ZONE = "UTC"
+LANGUAGES = [
+    ('pt-br', 'PT-BR'),
+    ('en', 'EN'),
+]
+
+LANGUAGE_CODE = "pt-br"
+
+TIME_ZONE = "America/Recife"
 
 USE_I18N = True
 

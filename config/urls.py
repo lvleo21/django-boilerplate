@@ -13,6 +13,9 @@ urlpatterns = [
     # Debug Toolbar
     path("__debug__/", include("debug_toolbar.urls")),
 
+    # Rosetta
+    re_path(r'^rosetta/', include('rosetta.urls')),
+
     # Swagger
     path(
         "swagger/",
