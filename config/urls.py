@@ -7,6 +7,9 @@ from apps.core.sites import custom_admin_site
 
 
 urlpatterns = [
+    # App API
+    path("api/", include("apps.api.urls")),
+
     # Unfold Admin
     path("staff/", custom_admin_site.urls),
 

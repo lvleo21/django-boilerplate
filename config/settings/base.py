@@ -50,6 +50,7 @@ EXTERNAL_APPS = [
 
 PROJECT_APPS = [
     "apps.core",
+    "apps.api"
 ]
 
 INSTALLED_APPS = PROJECT_APPS + EXTERNAL_APPS + DJANGO_APPS
