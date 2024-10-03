@@ -17,8 +17,18 @@ drf-yasg = "^1.21.7"
 psycopg2-binary = "^2.9.9"
 django-unfold = "^0.39.0"
 django-rosetta = "^0.10.1"
-setuptools = "^75.1.0"
+setuptools = "^66.1.1"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-django = "^4.9.0"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.base"
+python_files = ["test*.py", "*.p_testy"]
 
 [build-system]
 requires = ["poetry-core"]
