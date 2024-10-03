@@ -5,6 +5,8 @@ description = "Este projeto de boilerplate em Django fornece uma estrutura bási
 authors = ["Leonardo Veras <verasleonardo210@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+package-mode = false
+
 
 [tool.poetry.dependencies]
 python = "^3.12"
