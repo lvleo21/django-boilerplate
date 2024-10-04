@@ -68,7 +68,8 @@ class Command(BaseCommand):
         self.stdout.write(message)
 
     def _convert_language_code(self, language):
+        max_parts = 2
         parts = language.split('-')
-        if len(parts) == 2:
+        if len(parts) == max_parts:
             return f"{parts[0]}_{parts[1].upper()}"
         return language
