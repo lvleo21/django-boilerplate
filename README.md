@@ -1,40 +1,217 @@
-<p align="center"><img src="https://socialify.git.ci/lvleo21/django-boilerplate/image?description=1&amp;font=Inter&amp;forks=1&amp;issues=1&amp;language=1&amp;logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyBpZD0ibG9nby0zNyIgd2lkdGg9IjQyIiBoZWlnaHQ9IjM4IiB2aWV3Qm94PSIwIDAgNDIgMzgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI%2BIDxwYXRoIGQ9Ik01Ljc0NjYxIDI4LjcyNTlDNy4yODY3OCAyOS44MDAyIDkuNzgzODkgMjkuODAwMiAxMS4zMjQxIDI4LjcyNTlDMTIuODY0MiAyNy42NTE2IDEyLjg2NDIgMjUuOTA5OCAxMS4zMjQxIDI0LjgzNTVDOS43ODM4OSAyMy43NjEyIDcuMjg2NzggMjMuNzYxMiA1Ljc0NjYxIDI0LjgzNTVDNC4yMDY0NCAyNS45MDk4IDQuMjA2NDQgMjcuNjUxNiA1Ljc0NjYxIDI4LjcyNTlaIiBjbGFzcz0iY2N1c3RvbSIgZmlsbD0iIzI1Q0FBQyI%2BPC9wYXRoPiA8cGF0aCBkPSJNMjEuNzMyMiAxNC4xMzcxQzI0LjA0MjUgMTUuNzQ4NSAyNy43ODgxIDE1Ljc0ODUgMzAuMDk4NCAxNC4xMzcxQzMyLjQwODYgMTIuNTI1NiAzMi40MDg2IDkuOTEyOTggMzAuMDk4NCA4LjMwMTU1QzI3Ljc4ODEgNi42OTAxMSAyNC4wNDI1IDYuNjkwMTEgMjEuNzMyMiA4LjMwMTU1QzE5LjQyMiA5LjkxMjk4IDE5LjQyMiAxMi41MjU2IDIxLjczMjIgMTQuMTM3MVoiIGNsYXNzPSJjY3VzdG9tIiBmaWxsPSIjMjVDQUFDIj48L3BhdGg%2BIDxwYXRoIGQ9Ik0xMy4yNDY0IDIxLjQzMTVDMTUuMTcxNiAyMi43NzQzIDE4LjI5MyAyMi43NzQzIDIwLjIxODIgMjEuNDMxNUMyMi4xNDM0IDIwLjA4ODYgMjIuMTQzNCAxNy45MTE0IDIwLjIxODIgMTYuNTY4NUMxOC4yOTMgMTUuMjI1NyAxNS4xNzE2IDE1LjIyNTcgMTMuMjQ2NCAxNi41Njg1QzExLjMyMTIgMTcuOTExNCAxMS4zMjEyIDIwLjA4ODYgMTMuMjQ2NCAyMS40MzE1WiIgY2xhc3M9ImNjdXN0b20iIGZpbGw9IiMyNUNBQUMiPjwvcGF0aD4gPHBhdGggZD0iTTAuODY2MzQ1IDIwLjQ1ODlDMi4wMjE0NyAyMS4yNjQ2IDMuODk0MyAyMS4yNjQ2IDUuMDQ5NDMgMjAuNDU4OUM2LjIwNDU1IDE5LjY1MzIgNi4yMDQ1NSAxOC4zNDY5IDUuMDQ5NDMgMTcuNTQxMUMzLjg5NDMgMTYuNzM1NCAyLjAyMTQ3IDE2LjczNTQgMC44NjYzNDUgMTcuNTQxMUMtMC4yODg3ODIgMTguMzQ2OSAtMC4yODg3ODEgMTkuNjUzMiAwLjg2NjM0NSAyMC40NTg5WiIgY2xhc3M9ImNjdXN0b20iIGZpbGw9IiMyNUNBQUMiPjwvcGF0aD4gPHBhdGggZD0iTTEzLjI0NjQgNS44NzAwOEMxNS4xNzE2IDcuMjEyOTQgMTguMjkzIDcuMjEyOTQgMjAuMjE4MiA1Ljg3MDA4QzIyLjE0MzQgNC41MjcyMiAyMi4xNDM0IDIuMzUwMDEgMjAuMjE4MiAxLjAwNzE1QzE4LjI5MyAtMC4zMzU3MTUgMTUuMTcxNiAtMC4zMzU3MTYgMTMuMjQ2NCAxLjAwNzE1QzExLjMyMTIgMi4zNTAwMSAxMS4zMjEyIDQuNTI3MjIgMTMuMjQ2NCA1Ljg3MDA4WiIgY2xhc3M9ImNjdXN0b20iIGZpbGw9IiMyNUNBQUMiPjwvcGF0aD4gPHBhdGggZD0iTTUuNzQ2NjEgMTMuMTY0NUM3LjI4Njc4IDE0LjIzODggOS43ODM4OSAxNC4yMzg4IDExLjMyNDEgMTMuMTY0NUMxMi44NjQyIDEyLjA5MDIgMTIuODY0MiAxMC4zNDg0IDExLjMyNDEgOS4yNzQxNUM5Ljc4Mzg5IDguMTk5ODYgNy4yODY3OCA4LjE5OTg2IDUuNzQ2NjEgOS4yNzQxNUM0LjIwNjQ0IDEwLjM0ODQgNC4yMDY0NSAxMi4wOTAyIDUuNzQ2NjEgMTMuMTY0NVoiIGNsYXNzPSJjY3VzdG9tIiBmaWxsPSIjMjVDQUFDIj48L3BhdGg%2BIDxwYXRoIGQ9Ik0xMy4yNDY0IDM2Ljk5MjlDMTUuMTcxNiAzOC4zMzU3IDE4LjI5MyAzOC4zMzU3IDIwLjIxODIgMzYuOTkyOUMyMi4xNDM0IDM1LjY1IDIyLjE0MzQgMzMuNDcyOCAyMC4yMTgyIDMyLjEyOTlDMTguMjkzIDMwLjc4NzEgMTUuMTcxNiAzMC43ODcxIDEzLjI0NjQgMzIuMTI5OUMxMS4zMjEyIDMzLjQ3MjggMTEuMzIxMiAzNS42NSAxMy4yNDY0IDM2Ljk5MjlaIiBjbGFzcz0iY2N1c3RvbSIgZmlsbD0iIzI1Q0FBQyI%2BPC9wYXRoPiA8cGF0aCBkPSJNMzEuOTAxMSAyMS45MTc4QzM0LjIxMTQgMjMuNTI5MiAzNy45NTcxIDIzLjUyOTIgNDAuMjY3MyAyMS45MTc4QzQyLjU3NzYgMjAuMzA2NCA0Mi41Nzc2IDE3LjY5MzcgNDAuMjY3MyAxNi4wODIzQzM3Ljk1NzEgMTQuNDcwOCAzNC4yMTE0IDE0LjQ3MDggMzEuOTAxMSAxNi4wODIzQzI5LjU5MDkgMTcuNjkzNyAyOS41OTA5IDIwLjMwNjQgMzEuOTAxMSAyMS45MTc4WiIgY2xhc3M9ImNjdXN0b20iIGZpbGw9IiMyNUNBQUMiPjwvcGF0aD4gPHBhdGggZD0iTTIxLjczMjIgMjkuNjk4NEMyNC4wNDI1IDMxLjMwOTkgMjcuNzg4MSAzMS4zMDk5IDMwLjA5ODQgMjkuNjk4NEMzMi40MDg2IDI4LjA4NyAzMi40MDg2IDI1LjQ3NDQgMzAuMDk4NCAyMy44NjI5QzI3Ljc4ODEgMjIuMjUxNSAyNC4wNDI1IDIyLjI1MTUgMjEuNzMyMiAyMy44NjI5QzE5LjQyMiAyNS40NzQ0IDE5LjQyMiAyOC4wODcgMjEuNzMyMiAyOS42OTg0WiIgY2xhc3M9ImNjdXN0b20iIGZpbGw9IiMyNUNBQUMiPjwvcGF0aD4gPC9zdmc%2B&amp;name=1&amp;owner=1&amp;pattern=Circuit%20Board&amp;pulls=1&amp;stargazers=1&amp;theme=Light" alt="project-image"></p>
+<p align="center">
+<img src=".github/readme/bo.png" />
+</p>
 
+<h1 align="center">
+Django Boilerplate
+</h1>
 
+<p align="center">
 Este projeto de boilerplate em Django fornece uma estrutura básica para o desenvolvimento de aplicações web. Ele inclui a configuração inicial de banco de dados, autenticação de usuário, administração, etc.
+</p>
 
-### Ajustes e melhorias
+## 🛠️ Ajustes e melhorias
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
-- [X] Implementação django-rosetta
-- [X] Implementação django-unfold
-- [ ] Tutorial de configuração do boilerplate
+- [ ] Dockerização do projeto
+- [ ] Integrar projeto com redis
+- [ ] Integrar projeto com celery
+- [ ] Action do github para rodar os testes
 
 ## 🚀 Configurando o boilerplate
 
-Para configurar o boilerplate, siga estas etapas:
+### Pré-requisitos
 
-1. Em sua máquina, crie uma pasta para o seu projeto.
-2. Dentro da pasta criada, crie uma venv (virtualenv) e a ative.
-```bash
-# Linux
-python3 -m venv venv
-source venv/bin/activate
+Antes de começar, você precisará ter os seguintes itens instalados em sua máquina:
 
-# Windows
-python3 -m venv venv
-source .\venv\Scripts\activate.ps1
-```
-3. Com a venv ativada, instale o django.
+- **[Python 3.10+](https://www.python.org/downloads/)** - Para rodar o projeto.
+- **[Poetry](https://python-poetry.org/docs/#installation)** - Gerenciador de dependências e ambiente virtual (gerenciado via `pyproject.toml`).
+
+### Configuração
+
+#### Passo 1: Crie uma pasta para o projeto
+
+Crie uma pasta em sua máquina com o nome que desejar:
+
 ```bash
-pip install django
+mkdir projeto
+cd projeto
 ```
-4. Após instalar o django, basta configurar o seu projeto utilizando este boilerplate como template
+
+#### Passo 2: Clonar o repositório
+
+Clone este repositório nas pasta criada:
+
 ```bash
-django-admin startproject <nome_do_projeto> . --template https://github.com/lvleo21/django-boilerplate/archive/refs/heads/main.zip
+git clone git@github.com:lvleo21/django-boilerplate.git .
+```
+
+#### Passo 3: Configurar variáveis de ambiente
+
+Faça uma copia do arquivo `.env-example` que está localizado dentro de `config/settings/.env-example` e renomei para `.env`.
+
+```bash
+cp config/settings/.env-example config/settings/.env
+```
+
+Agora, basta preencher com as informações necessárias do arquivo.
+
+#### Passo opcional: Configurar venv do poetry
+
+Caso você deseje que a máquina virtual seja criado dentro do seu projeto,
+basta rodar o seguinte comando:
+
+```bash
+poetry config virtualenvs.in-project true
+```
+
+#### Passo 4: Instale as dependências com o poetry
+
+```bash
+poetry install
+```
+
+ou com as dependências de desenvolvimento:
+
+```bash
+ poetry install --with dev
+```
+
+#### Passo 5: Ativar o ambiente virtual do Poetry
+
+```bash
+poetry shell
+```
+
+#### Passo 6: Aplicar as migrações do banco de dados
+
+```bash
+python manage.py migrate
+```
+
+#### Passo 7: Rodar o servidor de desenvolvimento
+
+```bash
+python manage.py runserver
+```
+
+## 🏗️ Estrutura do projeto
+
+```
+.
+├── apps
+│   ├── api
+│   │   ├── apps.py
+│   │   ├── __init__.py
+│   │   ├── locale
+│   │   ├── migrations/
+│   │   ├── __pycache__/
+│   │   └── urls.py
+│   ├── core
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── __init__.py
+│   │   ├── locale
+│   │   │   ├── en
+│   │   │   │   └── LC_MESSAGES
+│   │   │   │       ├── django.mo
+│   │   │   │       └── django.po
+│   │   │   └── pt_BR
+│   │   │       └── LC_MESSAGES
+│   │   │           ├── django.mo
+│   │   │           └── django.po
+│   │   ├── management
+│   │   │   └── commands
+│   │   │       ├── do_make_messages.py
+│   │   │       ├── generate_secret_key.py
+│   │   │       └── __pycache__/
+│   │   ├── managers.py
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── __init__.py
+│   │   │   └── __pycache__/
+│   │   ├── models.py
+│   │   ├── __pycache__/
+│   │   ├── sites.py
+│   │   ├── static
+│   │   │   └── core
+│   │   │       └── assets
+│   │   │           └── admin
+│   │   │               └── login-bg.jpg
+│   │   ├── templates
+│   │   │   └── core
+│   │   │       └── layouts
+│   │   │           └── base.html
+│   │   ├── tests.py
+│   │   ├── utils.py
+│   │   └── views.py
+│   ├── __init__.py
+│   └── __pycache__/
+├── config
+│   ├── asgi.py
+│   ├── db.sqlite3
+│   ├── __init__.py
+│   ├── locale
+│   │   ├── en
+│   │   │   └── LC_MESSAGES
+│   │   │       ├── django.mo
+│   │   │       └── django.po
+│   │   └── pt_BR
+│   │       └── LC_MESSAGES
+│   │           ├── django.mo
+│   │           └── django.po
+│   ├── __pycache__/
+│   ├── settings
+│   │   ├── base.py
+│   │   ├── development.py
+│   │   ├── __init__.py
+│   │   ├── production.py
+│   │   ├── __pycache__/
+│   │   └── swagger.py
+│   ├── urls.py
+│   └── wsgi.py
+├── LICENSE
+├── manage.py
+├── poetry.lock
+├── pyproject.toml
+├── README.md
+└── temp.md
+```
+
+## Gerenciamento de Dependências
+
+Este projeto utiliza o Poetry para gerenciamento de dependências. Todas as bibliotecas e pacotes necessários estão listados no arquivo `pyproject.toml`.
+
+Para adicionar uma nova dependência:
+```bash
+poetry add <pacote>
+```
+
+Para remover uma dependência:
+```bash
+poetry remove <pacote>
+```
+
+## Comandos Úteis
+
+Rodar testes
+```bash
+poetry run pytest
+```
+
+ou com a shell ativa
+
+```bash
+pytest
 ```
 
 ## 📝 Licença
 
 Esse projeto está sob licença. Veja o arquivo [LICENÇA](https://github.com/lvleo21/django-boilerplate/blob/1e41c8ea27a5627096ae21695d5233c74f1f406a/LICENSE) para mais detalhes.
+
+
+## ©️ Copyright
+
+Imagem de capa foi retirada do site <a taget="_blank" href="https://www.brawlstarsdicas.com.br/">Brawl Stars Dicas</a>.
