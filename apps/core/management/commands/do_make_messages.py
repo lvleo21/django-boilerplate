@@ -1,9 +1,9 @@
 import os
 
-from django.core.management.base import BaseCommand
+from django.apps import apps
 from django.conf import settings
 from django.core.management import call_command
-from django.apps import apps
+from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
@@ -68,7 +68,8 @@ class Command(BaseCommand):
         self.stdout.write(message)
 
     def _convert_language_code(self, language):
+        max_parts = 2
         parts = language.split('-')
-        if len(parts) == 2:
+        if len(parts) == max_parts:
             return f"{parts[0]}_{parts[1].upper()}"
         return language
