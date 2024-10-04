@@ -17,6 +17,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [ ] Dockerização do projeto
 - [ ] Integrar projeto com redis
 - [ ] Integrar projeto com celery
+- [ ] Action do github para rodar os testes
 
 ## 🚀 Configurando o boilerplate
 
