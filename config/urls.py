@@ -1,10 +1,10 @@
-from django.urls import path, include, re_path
-from django.views.static import serve
 from django.conf import settings
+from django.urls import include, path, re_path
+from django.views.static import serve
 
-from .settings.swagger import schema_view
 from apps.core.sites import custom_admin_site
 
+from .settings.swagger import schema_view
 
 urlpatterns = [
     # App API

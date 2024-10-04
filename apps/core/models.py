@@ -1,10 +1,10 @@
 import re
 import uuid
 
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.utils.translation import gettext_lazy as _
 from django.core import validators
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.managers import AccountManager
 
@@ -32,7 +32,7 @@ class Account(BaseModel, AbstractBaseUser, PermissionsMixin):
         ),
         validators=[
             validators.RegexValidator(
-                re.compile("^[\w.@+-]+$"),
+                re.compile(r"^[\w.@+-]+$"),
                 _("Insira um nome de usuário válido."),
                 "invalid",
             )

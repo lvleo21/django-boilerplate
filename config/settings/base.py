@@ -1,10 +1,8 @@
 import os
-import environ
 from pathlib import Path
 
+import environ
 from django.templatetags.static import static
-from django.utils.translation import gettext_lazy as _
-
 
 env = environ.Env(DEBUG=(bool, False))
 

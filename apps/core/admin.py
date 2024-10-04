@@ -1,15 +1,12 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from django.db import models as djmodels
-from django.contrib.auth.admin import GroupAdmin
+from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.models import Group
-
+from django.db import models as djmodels
 from unfold.admin import ModelAdmin
 from unfold.contrib.forms.widgets import WysiwygWidget
 
 from apps.core.models import Account
 from apps.core.sites import custom_admin_site
-
 
 admin.site.unregister(Group)
 
