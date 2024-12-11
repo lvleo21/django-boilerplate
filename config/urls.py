@@ -6,18 +6,13 @@ from apps.core.sites import custom_admin_site
 
 from .settings.swagger import schema_view
 
-urlpatterns = [
-    # App API
-    path("api/", include("apps.api.urls")),
 
+urlpatterns = [
     # Unfold Admin
     path("staff/", custom_admin_site.urls),
 
-    # Debug Toolbar
-    path("__debug__/", include("debug_toolbar.urls")),
-
     # Rosetta
-    re_path(r'^rosetta/', include('rosetta.urls')),
+    re_path("rosetta/", include('rosetta.urls')),
 
     # Swagger
     path(
@@ -45,3 +40,9 @@ urlpatterns = [
         {'document_root': settings.STATIC_ROOT}
     ),
 ]
+
+if settings.DEBUG:
+    # Debug Toolbar
+    urlpatterns.extend([
+        path("__debug__/", include("debug_toolbar.urls")),
+    ])
