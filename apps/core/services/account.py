@@ -10,11 +10,11 @@ class AccountService:
     ACCOUNT_DEFAULT_USERNAME = settings.ACCOUNT_DEFAULT_USERNAME
 
     @classmethod
-    def create_default_user(self):
+    def create_default_user(cls):
         with transaction.atomic():
             params = {
-                "username": self.ACCOUNT_DEFAULT_USERNAME,
-                "email": self.ACCOUNT_DEFAULT_EMAIL,
+                "username": cls.ACCOUNT_DEFAULT_USERNAME,
+                "email": cls.ACCOUNT_DEFAULT_EMAIL,
                 "is_staff": True,
                 "email_is_confirmed": True,
                 "is_superuser": True,
@@ -23,5 +23,5 @@ class AccountService:
                 Account.objects.select_for_update().get(**params)
             except Account.DoesNotExist:
                 account = Account.objects.create(**params)
-                account.set_password(self.ACCOUNT_DEFAULT_PASSWORD)
+                account.set_password(cls.ACCOUNT_DEFAULT_PASSWORD)
                 account.save()
