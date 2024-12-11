@@ -6,7 +6,6 @@ from apps.core.sites import custom_admin_site
 
 from .settings.swagger import schema_view
 
-
 urlpatterns = [
     # Unfold Admin
     path("staff/", custom_admin_site.urls),
