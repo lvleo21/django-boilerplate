@@ -48,7 +48,6 @@ EXTERNAL_APPS = [
 
 PROJECT_APPS = [
     "apps.core",
-    "apps.api"
 ]
 
 INSTALLED_APPS = PROJECT_APPS + EXTERNAL_APPS + DJANGO_APPS
@@ -140,6 +139,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "core.Account"
+
+ACCOUNT_DEFAULT_EMAIL = env("ACCOUNT_DEFAULT_EMAIL", default="admin@gmail.com")
+
+ACCOUNT_DEFAULT_PASSWORD = env("ACCOUNT_DEFAULT_PASSWORD", default="123@mudar")
+
+ACCOUNT_DEFAULT_USERNAME = env("ACCOUNT_DEFAULT_USERNAME", default="admin")
 
 # Swagger
 
