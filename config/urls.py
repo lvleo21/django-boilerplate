@@ -7,7 +7,10 @@ from apps.core.sites import custom_admin_site
 from .settings.swagger import schema_view
 
 urlpatterns = [
-    # Unfold Admin
+    # Apps
+    path("", include("apps.urls")),
+
+    # Admin
     path("staff/", custom_admin_site.urls),
 
     # Rosetta
