@@ -1,11 +1,23 @@
 from django.conf import settings
-from django.contrib import admin
+
+from unfold.sites import UnfoldAdminSite
 
 
-class CustomAdminSite(admin.AdminSite):
-    site_title = settings.PROJECT_NAME
-    version = f"(v{settings.VERSION} - {settings.ENVIRONMENT.upper()})"
-    site_header = f"{settings.PROJECT_NAME} {version}"
+class CustomAdminSite(UnfoldAdminSite):
+
+    def each_context(self, request):
+        context = super(CustomAdminSite, self).each_context(request)
+        context.update({
+            "environment": self._get_environment_callback(),
+        })
+        return context
+
+    def _get_environment_callback(self):
+        COLOR = "success"
+        return [
+            "{} - v{}".format(settings.ENVIRONMENT, settings.VERSION),
+            COLOR
+        ]
 
 
 custom_admin_site = CustomAdminSite()
