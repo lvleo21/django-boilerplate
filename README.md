@@ -60,20 +60,6 @@ Este projeto de boilerplate em Django fornece uma estrutura básica para o desen
 
 2. Acesse a aplicação em `http://127.0.0.1:8000`.
 
-## Testes
-
-1. Execute os testes:
-    ```bash
-    python manage.py test
-    ```
-
-## Contribuição
-
-1. Faça um fork do projeto.
-2. Crie uma nova branch: `git checkout -b minha-nova-feature`.
-3. Faça suas alterações e commit: `git commit -m 'Adiciona nova feature'`.
-4. Envie para o repositório remoto: `git push origin minha-nova-feature`.
-5. Abra um Pull Request.
 
 ## Licença
 
