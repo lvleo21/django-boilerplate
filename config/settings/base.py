@@ -177,31 +177,22 @@ DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda request: DEBUG}
 
 # Unfold
 UNFOLD = {
-    "SITE_TITLE": env("PROJECT_NAME", default="Django Boilerplate"),
-    "SITE_HEADER": env("PROJECT_NAME", default="Django Boilerplate"),
-    "SITE_SYMBOL": "settings",  # Material Symbols & Icons
-    "SHOW_HISTORY": True,
-    "ENVIRONMENT": "apps.core.utils.environment_callback",
-    "SIDEBAR": {
-        "show_search": True,
-        "show_all_applications": True,
-    },
     "LOGIN": {
         "image": lambda request: static("core/assets/admin/login-bg.jpg"),
     },
-    "COLORS": {
-        "primary": {
-            "50": "232 236 255",
-            "100": "208 218 255",
-            "200": "174 190 255",
-            "300": "125 152 255",
-            "400": "84 121 255",
-            "500": "68 102 255",
-            "600": "58 89 229",
-            "700": "49 76 204",
-            "800": "42 65 178",
-            "900": "35 54 151",
-            "950": "18 28 102"
-        }
-    },
+    # "COLORS": {
+    #     "primary": {
+    #         "50": "232 236 255",
+    #         "100": "208 218 255",
+    #         "200": "174 190 255",
+    #         "300": "125 152 255",
+    #         "400": "84 121 255",
+    #         "500": "68 102 255",
+    #         "600": "58 89 229",
+    #         "700": "49 76 204",
+    #         "800": "42 65 178",
+    #         "900": "35 54 151",
+    #         "950": "18 28 102"
+    #     }
+    # },
 }
