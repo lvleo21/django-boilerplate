@@ -20,6 +20,7 @@ psycopg2-binary = "^2.9.9"
 django-rosetta = "^0.10.1"
 setuptools = "^66.1.1"
 django-unfold = "^0.50.0"
+gunicorn = "^23.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
