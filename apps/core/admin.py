@@ -41,10 +41,14 @@ class BaseAdmin(ModelAdmin):
 @admin.register(Account, site=custom_admin_site)
 class AccountAdmin(UserAdmin, BaseAdmin):
     list_display = [
-        "email", "username", "is_staff", "email_is_confirmed", "created_at",
+        "email",
+        "username",
+        "is_staff",
+        "email_is_confirmed",
+        "created_at",
         "is_active"
     ]
-    list_filter = ["email", "is_staff", "is_active"]
+    list_filter = ["email", "is_staff", "is_superuser", "is_active"]
 
     fieldsets = [
         (
@@ -54,6 +58,7 @@ class AccountAdmin(UserAdmin, BaseAdmin):
                     "first_name",
                     "last_name",
                     "email",
+                    "email_is_confirmed",
                     "username",
                     "password",
                 ]
@@ -64,7 +69,7 @@ class AccountAdmin(UserAdmin, BaseAdmin):
             {
                 "fields": (
                     "is_staff",
-                    "email_is_confirmed",
+                    "is_superuser",
                     "groups",
                     "user_permissions",
                 )
