@@ -5,7 +5,7 @@ down:
 	docker-compose -f docker-compose.yml down
 
 hard-down:
- 	docker-compose -f docker-compose.yml down --volumes --remove-orphans
+	docker-compose -f docker-compose.yml down --volumes --remove-orphans
 
 collectstatic:
 	docker-compose exec web python manage.py collectstatic --noinput
