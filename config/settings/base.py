@@ -6,10 +6,9 @@ from django.templatetags.static import static
 
 
 env = environ.Env(DEBUG=(bool, False))
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-environ.Env.read_env(os.path.join(BASE_DIR, "settings/.env"))
 
 SECRET_KEY = env("SECRET_KEY")
 
@@ -21,7 +20,12 @@ ENVIRONMENT = env("ENVIRONMENT", default="development")
 
 PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
+
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=["https://0.0.0.0:8000"]
+)
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -112,6 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Locale
+
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
@@ -129,15 +135,22 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Static
+
 STATIC_URL = "static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# Media
 
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Account
 
 AUTH_USER_MODEL = "core.Account"
 
@@ -206,4 +219,28 @@ UNFOLD = {
             "950": "18 28 102"
         }
     },
+}
+
+# SMTP
+
+if env("USE_SMTP", default=False, cast=bool):
+    EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = env('EMAIL_HOST')
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+# Database - PostgreSQL
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+    }
 }
