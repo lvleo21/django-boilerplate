@@ -8,7 +8,7 @@ Este projeto de boilerplate em Django fornece uma estrutura básica para o desen
 
 ## Estrutura do Projeto
 
-- **app/**: Diretório contendo os aplicativos Django.
+- **apps/**: Diretório contendo os aplicativos Django.
 - **config/**: Diretório de configuração do projeto.
 - **static/**: Arquivos estáticos (CSS, JavaScript, imagens).
 - **templates/**: Templates HTML.
@@ -16,9 +16,10 @@ Este projeto de boilerplate em Django fornece uma estrutura básica para o desen
 
 ## Pré-requisitos
 
-- Python 3.8+
-- Django 3.2+
-- Virtualenv
+- Python 3.12+
+- Django 5.1.1+
+- Docker
+- Docker Compose
 
 ## Instalação
 
@@ -28,38 +29,36 @@ Este projeto de boilerplate em Django fornece uma estrutura básica para o desen
     cd django-boilerplate
     ```
 
-2. Crie e ative um ambiente virtual:
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
-
-3. Instale as dependências:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-## Configuração
-
-1. Copie o arquivo de exemplo `.env.example` para `.env` e configure as variáveis de ambiente:
+2. Copie o arquivo de exemplo `.env.example` para `.env` e configure as variáveis de ambiente:
     ```bash
     cp .env.example .env
     ```
 
-2. Execute as migrações do banco de dados:
+3. Construa e inicie os containers Docker usando o Makefile:
     ```bash
-    python manage.py migrate
+    make build
     ```
 
 ## Execução
 
-1. Inicie o servidor de desenvolvimento:
+1. Acesse a aplicação em `http://127.0.0.1:8000`.
+
+## Comandos Úteis
+
+- Para parar os containers:
     ```bash
-    python manage.py runserver
+    make down
     ```
 
-2. Acesse a aplicação em `http://127.0.0.1:8000`.
+- Para executar migrações:
+    ```bash
+    docker-compose exec web poetry run python manage.py migrate
+    ```
 
+- Para coletar arquivos estáticos:
+    ```bash
+    docker-compose exec web poetry run python manage.py collectstatic --noinput
+    ```
 
 ## Licença
 
