@@ -11,13 +11,6 @@ class Profile(BaseModel):
         related_name="profile",
         verbose_name=_("Usuário"),
     )
-    name = models.CharField(
-        verbose_name=_("Nome"),
-        max_length=255,
-        help_text=_("Nome completo do usuário."),
-        null=True,
-        blank=True,
-    )
 
     class Meta:
         verbose_name = _("Perfil")

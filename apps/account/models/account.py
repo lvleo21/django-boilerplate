@@ -1,7 +1,7 @@
 import re
 
 from django.core import validators
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -9,7 +9,7 @@ from apps.account.managers import AccountManager
 from apps.core.models import BaseModel
 
 
-class Account(BaseModel, AbstractBaseUser, PermissionsMixin):
+class Account(BaseModel, AbstractUser):
     username = models.CharField(
         _("Nome de usuário"),
         max_length=15,
@@ -26,14 +26,10 @@ class Account(BaseModel, AbstractBaseUser, PermissionsMixin):
             )
         ],
     )
-    email = models.EmailField(_("E-mail"), max_length=255, unique=True)
-    is_staff = models.BooleanField(
-        _("É Staff?"),
-        default=False,
-        help_text=_(
-            "Designa se o usuário pode efetuar login neste site de "
-            "administração."
-        ),
+    email = models.EmailField(
+        _("E-mail"),
+        max_length=255,
+        unique=True
     )
 
     USERNAME_FIELD = "username"

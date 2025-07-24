@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.urls import include, path, re_path
 from django.views.static import serve
-from django.contrib import admin
 
+from apps.core.sites import custom_admin_site
 from config.settings.swagger import schema_view
 
 
@@ -11,7 +11,7 @@ urlpatterns = [
     path("", include("apps.urls")),
 
     # Admin
-    path("staff/", admin.site.urls),
+    path("staff/", custom_admin_site.urls),
 
     # Rosetta
     re_path("rosetta/", include('rosetta.urls')),

@@ -229,6 +229,21 @@ polib = ">=1.1.0"
 requests = ">=2.30.0"
 
 [[package]]
+name = "django-unfold"
+version = "0.63.0"
+description = "Modern Django admin theme for seamless interface development"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "django_unfold-0.63.0-py3-none-any.whl", hash = "sha256:9bab010edc95965d1811aeca2ed1b7621aa5b5483e1c673146dc2d7b3b388ea4"},
+    {file = "django_unfold-0.63.0.tar.gz", hash = "sha256:a32bb7c4a860a2e95a597778ce4f50f1d1a809a6ac06f6551dd0ebd371611cdf"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[[package]]
 name = "djangorestframework"
 version = "3.16.0"
 description = "Web APIs for Django, made easy."
@@ -691,4 +706,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "4f376c971f44a473ae02d0e60dba06bfffcde8d469125266b4282ded9a74cad6"
+content-hash = "56e469fc31b038cdee2671294fb9d56b61dbe943b9ce44bfc6c787647e5770c0"
