@@ -46,7 +46,6 @@ DJANGO_APPS = [
 
 EXTERNAL_APPS = [
     "rest_framework",
-    "debug_toolbar",
     "rosetta",
 
     # Swagger
@@ -69,7 +68,6 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

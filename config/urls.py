@@ -31,13 +31,6 @@ urlpatterns = [
     ),
 ]
 
-# Debug Toolbar
-
-if settings.DEBUG:
-    urlpatterns.extend([
-        path("__debug__/", include("debug_toolbar.urls")),
-    ])
-
 # Swagger
 
 if settings.USE_SWAGGER:
