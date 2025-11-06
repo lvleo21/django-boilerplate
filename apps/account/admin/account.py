@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.models import Group
-
-from unfold.forms import (
+from django.contrib.auth.forms import (
     AdminPasswordChangeForm,
     UserChangeForm,
     UserCreationForm
@@ -11,13 +10,13 @@ from unfold.forms import (
 from apps.account.admin.profile import ProfileInline
 from apps.account.models import Account
 from apps.core.admin import BaseAdmin
-from apps.core.sites import custom_admin_site
+from apps.core.sites import admin_site
 
 
-admin.site.unregister(Group)
+admin_site.unregister(Group)
 
 
-@admin.register(Account, site=custom_admin_site)
+@admin.register(Account, site=admin_site)
 class AccountAdmin(UserAdmin, BaseAdmin):
     list_display = [
         "username",
@@ -31,9 +30,6 @@ class AccountAdmin(UserAdmin, BaseAdmin):
         "is_superuser",
         "is_active"
     ]
-    form = UserChangeForm
-    add_form = UserCreationForm
-    change_password_form = AdminPasswordChangeForm
     search_fields = ["email", "username"]
     ordering = ["username"]
     inlines = [ProfileInline]
@@ -43,6 +39,6 @@ class AccountAdmin(UserAdmin, BaseAdmin):
     ]
 
 
-@admin.register(Group, site=custom_admin_site)
-class GroupAdmin(GroupAdmin, admin.ModelAdmin):
+@admin.register(Group, site=admin_site)
+class GroupAdmin(GroupAdmin, BaseAdmin):
     ...

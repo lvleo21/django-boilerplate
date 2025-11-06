@@ -1,23 +1,28 @@
 from django.conf import settings
+from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
-from unfold.sites import UnfoldAdminSite
 
-
-class CustomAdminSite(UnfoldAdminSite):
+class CustomAdminSite(admin.AdminSite):
+    site_title = settings.PROJECT_NAME
+    index_title = _("Painel de Administração: {}").format(
+        settings.PROJECT_NAME
+    )
 
     def each_context(self, request):
         context = super(CustomAdminSite, self).each_context(request)
         context.update({
-            "environment": self._get_environment_callback(),
+            "site_header": self.get_site_header(),
         })
         return context
 
-    def _get_environment_callback(self):
-        COLOR = "success"
-        return [
-            "{} - v{}".format(settings.ENVIRONMENT, settings.VERSION),
-            COLOR
-        ]
+    def get_site_header(self):
+        return (
+            f"{self.site_title} - {settings.ENVIRONMENT.upper()} "
+            f"(v{settings.VERSION})"
+        )
 
 
-custom_admin_site = CustomAdminSite()
+admin_site = CustomAdminSite()
+# Copia todos os registries do admin padrão
+admin_site._registry.update(admin.site._registry)
