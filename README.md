@@ -1,18 +1,14 @@
-<h1 align="center">
-Django Boilerplate
-</h1>
+# Django Boilerplate
 
-<p align="center">
 Este projeto de boilerplate em Django fornece uma estrutura básica para o desenvolvimento de aplicações web. Ele inclui a configuração inicial de banco de dados, autenticação de usuário, administração, etc.
-</p>
 
 ## Estrutura do Projeto
 
-- **apps/**: Diretório contendo os aplicativos Django.
-- **config/**: Diretório de configuração do projeto.
-- **static/**: Arquivos estáticos (CSS, JavaScript, imagens).
-- **templates/**: Templates HTML.
-- **manage.py**: Script de gerenciamento do Django.
+-  **apps/**: Diretório contendo os aplicativos Django.
+-  **config/**: Diretório de configuração do projeto.
+-  **static/**: Arquivos estáticos (CSS, JavaScript, imagens).
+-  **templates/**: Templates HTML.
+-  **manage.py**: Script de gerenciamento do Django.
 
 ## Pré-requisitos
 
@@ -21,45 +17,40 @@ Este projeto de boilerplate em Django fornece uma estrutura básica para o desen
 - Docker
 - Docker Compose
 
-## Instalação
+## Bucket Access Policy
 
-1. Clone o repositório:
-    ```bash
-    git clone https://github.com/seu-usuario/django-boilerplate.git
-    cd django-boilerplate
-    ```
-
-2. Copie o arquivo de exemplo `.env.example` para `.env` e configure as variáveis de ambiente:
-    ```bash
-    cp .env.example .env
-    ```
-
-3. Construa e inicie os containers Docker usando o Makefile:
-    ```bash
-    make build
-    ```
-
-## Execução
-
-1. Acesse a aplicação em `http://127.0.0.1:8000`.
-
-## Comandos Úteis
-
-- Para parar os containers:
-    ```bash
-    make down
-    ```
-
-- Para executar migrações:
-    ```bash
-    docker-compose exec web poetry run python manage.py migrate
-    ```
-
-- Para coletar arquivos estáticos:
-    ```bash
-    docker-compose exec web poetry run python manage.py collectstatic --noinput
-    ```
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PrivateAccessForMedia",
+            "Effect": "Allow",
+            "Action": [
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<bucket_name>",
+                "arn:aws:s3:::<bucket_name>/media/*"
+            ]
+        },
+        {
+            "Sid": "PrivateAccessForStatic",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<bucket_name>/static/*"
+            ]
+        }
+    ]
+}
+```
 
 ## Licença
-
 Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
