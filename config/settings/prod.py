@@ -1,6 +1,8 @@
 from config.settings.base import *
 
 
+# Database
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -11,7 +13,6 @@ DATABASES = {
         "PORT": env("DB_PORT"),
     }
 }
-
 
 # Storage
 
@@ -33,7 +34,7 @@ AWS_S3_USE_SSL = env.bool("AWS_S3_USE_SSL", default=True)
 
 AWS_S3_MAX_AGE = env.int("AWS_S3_MAX_AGE", default=86400)
 
-OPTIONS = {
+AWS_OPTIONS = {
     "access_key": AWS_ACCESS_KEY_ID,
     "secret_key": AWS_SECRET_ACCESS_KEY,
     "bucket_name": AWS_STORAGE_BUCKET_NAME,
@@ -46,7 +47,7 @@ STORAGES = {
     "default": {
         "BACKEND": "apps.core.storages.MediaRootS3BotoStorage",
         "OPTIONS": {
-            **OPTIONS,
+            **AWS_OPTIONS,
             "object_parameters": {
                 "CacheControl": f"max-age={AWS_S3_MAX_AGE}",
             }
@@ -55,7 +56,7 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "apps.core.storages.StaticRootS3BotoStorage",
         "OPTIONS": {
-            **OPTIONS
+            **AWS_OPTIONS
         }
     }
 }
