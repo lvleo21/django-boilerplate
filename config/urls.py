@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import include, path, re_path
 from django.views.static import serve
 
-from apps.core.sites import custom_admin_site
+from apps.core.sites import admin_site
 from config.settings.swagger import schema_view
 
 
@@ -11,7 +11,7 @@ urlpatterns = [
     path("", include("apps.urls")),
 
     # Admin
-    path("staff/", custom_admin_site.urls),
+    path("staff/", admin_site.urls),
 
     # Rosetta
     re_path("rosetta/", include('rosetta.urls')),
@@ -30,13 +30,6 @@ urlpatterns = [
         {'document_root': settings.STATIC_ROOT}
     ),
 ]
-
-# Debug Toolbar
-
-if settings.DEBUG:
-    urlpatterns.extend([
-        path("__debug__/", include("debug_toolbar.urls")),
-    ])
 
 # Swagger
 

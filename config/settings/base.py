@@ -2,8 +2,6 @@ import os
 from pathlib import Path
 import environ
 
-from django.templatetags.static import static
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,12 +27,6 @@ CSRF_TRUSTED_ORIGINS = env.list(
 )
 
 DJANGO_APPS = [
-    # Exception of external app
-    "unfold",
-    "unfold.contrib.filters",
-    "unfold.contrib.forms",
-    "unfold.contrib.inlines",
-
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,16 +38,15 @@ DJANGO_APPS = [
 
 EXTERNAL_APPS = [
     "rest_framework",
-    "debug_toolbar",
     "rosetta",
-
-    # Swagger
     "drf_yasg",
+    "django_celery_beat",
 ]
 
 PROJECT_APPS = [
     "apps.account",
     "apps.core",
+    "apps.upload",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + PROJECT_APPS
@@ -69,7 +60,6 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -198,7 +188,7 @@ if USE_SMTP:
     EMAIL_HOST_USER = env('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
-# Default database - PostgreSQL
+# Default database
 
 DATABASES = {
     'default': {
@@ -207,32 +197,8 @@ DATABASES = {
     }
 }
 
-UNFOLD = {
-    "SITE_TITLE": env("PROJECT_NAME", default="Django Boilerplate"),
-    "SITE_HEADER": env("PROJECT_NAME", default="Django Boilerplate"),
-    "SITE_SYMBOL": "settings",  # Material Symbols & Icons
-    "SHOW_HISTORY": True,
-    "ENVIRONMENT": "apps.core.utils.environment_callback",
-    "SIDEBAR": {
-        "show_search": True,
-        "show_all_applications": True,
-    },
-    "LOGIN": {
-        "image": lambda request: static("core/assets/admin/login-bg.jpg"),
-    },
-    "COLORS": {
-        "primary": {
-            "50": "232 236 255",
-            "100": "208 218 255",
-            "200": "174 190 255",
-            "300": "125 152 255",
-            "400": "84 121 255",
-            "500": "68 102 255",
-            "600": "58 89 229",
-            "700": "49 76 204",
-            "800": "42 65 178",
-            "900": "35 54 151",
-            "950": "18 28 102"
-        }
-    },
-}
+# Celery
+
+CELERY_BROKER_URL = env("CELERY_BROKER")
+
+CELERY_RESULT_BACKEND = env("CELERY_BACKEND")

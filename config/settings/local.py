@@ -1,10 +1,12 @@
 from config.settings.base import *
 
-
-# Debug Toolbar config
-
-USE_TOOLBAR = env("USE_TOOLBAR", default=False, cast=bool)
-
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": lambda request: USE_TOOLBAR
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+    }
 }
