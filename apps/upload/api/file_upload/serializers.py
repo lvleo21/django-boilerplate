@@ -1,8 +1,6 @@
-from django.utils.translation import gettext as _
-
 from rest_framework import serializers, exceptions
 
-from apps.upload.utils import create_file_upload
+from apps.upload.services import FileUploadService
 
 
 class UploadSerializer(serializers.Serializer):
@@ -13,14 +11,16 @@ class UploadSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         try:
-            upload, response = create_file_upload(
-                name=validated_data.get("name"),
+            upload, presigned_url = (
+                FileUploadService.create_file_upload(
+                    name=validated_data.get("name"),
+                )
             )
         except Exception:
             raise exceptions.ValidationError()
 
         return {
-            "url": response,
+            "url": presigned_url,
             "pk": upload.pk,
             "path": upload.path.url
         }

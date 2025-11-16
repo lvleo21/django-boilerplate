@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Criado em')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Atualizado em')),
                 ('is_active', models.BooleanField(default=True, verbose_name='Está ativo?')),
-                ('path', models.FileField(blank=True, editable=False, max_length=255, null=True, storage=apps.core.storages.UUIDS3Storage(), upload_to='', verbose_name='Path')),
+                ('path', models.FileField(blank=True, editable=False, max_length=255, null=True, upload_to='', verbose_name='Path')),
                 ('name', models.CharField(editable=False, max_length=255, verbose_name='Nome')),
                 ('owner', models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='Usuário responsável')),
             ],
