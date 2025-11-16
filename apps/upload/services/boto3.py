@@ -5,14 +5,21 @@ from botocore.exceptions import ClientError
 from django.conf import settings
 
 
+def get_boto3_client():
+    try:
+        return boto3.client(
+            's3',
+            region_name=getattr(settings, "AWS_REGION", ""),
+            aws_access_key_id=getattr(settings, "AWS_ACCESS_KEY_ID", ""),
+            aws_secret_access_key=getattr(settings, "AWS_SECRET_ACCESS_KEY", ""),
+            endpoint_url=getattr(settings, "AWS_S3_ENDPOINT_URL", ""),
+        )
+    except Exception:
+        return None
+
+
 class Boto3Service:
-    client = boto3.client(
-        "s3",
-        region_name=getattr(settings, 'AWS_REGION'),
-        aws_access_key_id=getattr(settings, 'AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key=getattr(settings, 'AWS_SECRET_ACCESS_KEY'),
-        endpoint_url=getattr(settings, 'AWS_S3_ENDPOINT_URL'),
-    )
+    client = get_boto3_client()
     prefix = "media/"
 
     @classmethod
