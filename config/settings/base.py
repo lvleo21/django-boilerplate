@@ -39,9 +39,8 @@ DJANGO_APPS = [
 EXTERNAL_APPS = [
     "rest_framework",
     "rosetta",
-
-    # Swagger
     "drf_yasg",
+    "django_celery_beat",
 ]
 
 PROJECT_APPS = [
@@ -189,7 +188,7 @@ if USE_SMTP:
     EMAIL_HOST_USER = env('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
-# Default database - PostgreSQL
+# Default database
 
 DATABASES = {
     'default': {
@@ -197,3 +196,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Celery
+
+CELERY_BROKER_URL = env("CELERY_BROKER")
+
+CELERY_RESULT_BACKEND = env("CELERY_BACKEND")
