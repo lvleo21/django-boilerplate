@@ -50,6 +50,11 @@ class AccountAdmin(UserAdmin, BaseAdmin):
         )
     ]
 
+    def get_inline_instances(self, request, account=None):
+        if account is None:
+            return []
+        return super().get_inline_instances(request, account)
+
 
 @admin.register(Group, site=admin_site)
 class GroupAdmin(GroupAdmin, BaseAdmin):
