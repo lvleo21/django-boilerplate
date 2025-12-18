@@ -1,4 +1,3 @@
-from django.db.models import TextField
 from django.contrib.admin import ModelAdmin
 
 
