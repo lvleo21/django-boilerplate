@@ -1,11 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.models import Group
-from django.contrib.auth.forms import (
-    AdminPasswordChangeForm,
-    UserChangeForm,
-    UserCreationForm
-)
 
 from apps.account.admin.profile import ProfileInline
 from apps.account.models import Account
@@ -36,6 +31,23 @@ class AccountAdmin(UserAdmin, BaseAdmin):
     readonly_fields = [
         "last_login",
         "date_joined",
+    ]
+    add_fieldsets = [
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                    "usable_password",
+                    "is_staff",
+                    "is_superuser",
+                )
+            }
+        )
     ]
 
 
