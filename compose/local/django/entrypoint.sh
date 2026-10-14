@@ -9,26 +9,21 @@ set -o nounset
 
 postgres_ready() {
 python << END
+import os
 import sys
 
 import psycopg2
 
+url = os.environ.get("DATABASE_URL", "")
+
+# Sem DATABASE_URL de Postgres o Django usa SQLite, então não há o que esperar
+if not url.startswith("postgres"):
+    sys.exit(0)
+
 try:
-    psycopg2.connect(
-        dbname="${DB_NAME}",
-        user="${DB_USER}",
-        password="${DB_PASSWORD}",
-        host="${DB_HOST}",
-        port="${DB_PORT}",
-    )
+    psycopg2.connect(url)
 except Exception as e:
     print(f"Unexpected error: {e}")
-    print(f"Database connection details:")
-    print(f"  dbname: {'${DB_NAME}'}")
-    print(f"  user: {'${DB_USER}'}")
-    print(f"  password: {'${DB_PASSWORD}'}")
-    print(f"  host: {'${DB_HOST}'}")
-    print(f"  port: {'${DB_PORT}'}")
     sys.exit(-1)
 sys.exit(0)
 
