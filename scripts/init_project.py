@@ -26,9 +26,11 @@ ENV_TARGETS = {
     ROOT / "config" / "settings" / ".env": "127.0.0.1",
     ROOT / ".env" / ".env.local": "db",
 }
+DOCKER_COMPOSE = ROOT / "docker-compose.yml"
 TEMPLATE_DESCRIPTION = re.compile(r"^Este projeto de boilerplate.*$", re.M)
 SLUG_RE = re.compile(r"^[a-z][a-z0-9-]*$")
 DB_NAME_RE = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
+CONTAINER_PREFIX_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 
 
 def ask(prompt, default=None, validate=None, hint=None):
@@ -124,6 +126,32 @@ def update_readme(values):
     README.write_text(text, encoding="utf-8")
 
 
+def update_docker_compose(values):
+    prefix = values["container_prefix"]
+    text = DOCKER_COMPOSE.read_text(encoding="utf-8")
+    # container_name: django_web, django_web_db, django_web_celery_worker...
+    text = re.sub(
+        r"^(\s*container_name: )django_web(\S*)$",
+        lambda m: f"{m.group(1)}{prefix}{m.group(2)}",
+        text,
+        flags=re.M,
+    )
+    # image: django_web (serviço web) e django_celery_worker, django_celery_beat...
+    text = re.sub(
+        r"^(\s*image: )django_web$",
+        lambda m: f"{m.group(1)}{prefix}",
+        text,
+        flags=re.M,
+    )
+    text = re.sub(
+        r"^(\s*image: )django_celery_(\w+)$",
+        lambda m: f"{m.group(1)}{prefix}_celery_{m.group(2)}",
+        text,
+        flags=re.M,
+    )
+    DOCKER_COMPOSE.write_text(text, encoding="utf-8")
+
+
 def update_env_example(values):
     text = ENV_EXAMPLE.read_text(encoding="utf-8")
     text = set_env(text, "PROJECT_NAME", values["project_name"])
@@ -171,6 +199,12 @@ def collect():
     db_password = getpass.getpass("Senha do banco (oculta): ")
     if not db_password:
         sys.exit("A senha do banco é obrigatória.")
+    container_prefix = ask(
+        "Prefixo dos containers Docker",
+        db_default,
+        validate=lambda v: bool(CONTAINER_PREFIX_RE.match(v)),
+        hint="Minúsculas, números e underscore, começando por letra. Ex.: minha_loja_web.",
+    )
     return {
         "project_name": project_name,
         "slug": slug,
@@ -179,12 +213,13 @@ def collect():
         "db_name": db_name,
         "db_user": db_user,
         "db_password": db_password,
+        "container_prefix": container_prefix,
         "secret_key": secrets.token_urlsafe(50),
     }
 
 
 def main():
-    if not ENV_EXAMPLE.exists() or not PYPROJECT.exists() or not README.exists():
+    if not all(p.exists() for p in (ENV_EXAMPLE, PYPROJECT, README, DOCKER_COMPOSE)):
         sys.exit("Execute a partir de um clone do boilerplate (arquivos base não encontrados).")
 
     values = collect()
@@ -195,6 +230,7 @@ def main():
     print(f"  Descrição: {values['description']}")
     print(f"  Autor: {values['author']}")
     print(f"  Banco: {values['db_name']} (usuário {values['db_user']})")
+    print(f"  Prefixo dos containers: {values['container_prefix']}")
     print("  SECRET_KEY: gerada automaticamente")
 
     if not confirm("\nAplicar essas configurações?", default=True):
@@ -207,6 +243,8 @@ def main():
     print("  Atualizado: README.md")
     update_env_example(values)
     print("  Atualizado: config/settings/.env-example")
+    update_docker_compose(values)
+    print("  Atualizado: docker-compose.yml")
     write_env_files(values)
     print("\nPronto. Próximos passos: revisar o diff e rodar 'make build env=local'.")
 
