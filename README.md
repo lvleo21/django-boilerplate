@@ -12,6 +12,8 @@ make init
 
 O script pergunta o nome do projeto, o nome do pacote, a descrição, o autor, o banco de dados (nome, usuário e senha) e gera a `SECRET_KEY`. Depois atualiza `pyproject.toml`, este README e os arquivos de ambiente (`config/settings/.env` e `.env/.env.local`). Esses arquivos não vão para o git.
 
+O script também oferece criar a `.venv` local. Ele procura um Python compatível com o `pyproject.toml` no `PATH`, no pyenv, no asdf e no uv. Se não encontrar, explica qual versão instalar e não altera nada.
+
 ## Estrutura do Projeto
 
 -  **apps/**: Diretório contendo os aplicativos Django.

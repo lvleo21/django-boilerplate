@@ -3,15 +3,20 @@
 
 Pergunta o nome do projeto, o slug do pacote, a descrição, o autor, o banco e
 a senha, gera a SECRET_KEY e atualiza pyproject.toml, README.md e os arquivos
-de ambiente. Ao final, remove a si mesmo, o alvo `init` do Makefile e a seção
-do README que explica como usá-lo. Use apenas em um clone novo, uma vez.
+de ambiente. Opcionalmente cria a .venv com um Python compatível com o
+pyproject.toml, procurado no PATH, no pyenv, no asdf e no uv. Ao final, remove
+a si mesmo, o alvo `init` do Makefile e a seção do README que explica como
+usá-lo. Use apenas em um clone novo, uma vez.
 
 Uso: python scripts/init_project.py
 """
 
 import getpass
+import os
 import re
 import secrets
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import quote
@@ -27,6 +32,9 @@ ENV_TARGETS = {
     ROOT / ".env" / ".env.local": "db",
 }
 DOCKER_COMPOSE = ROOT / "docker-compose.yml"
+VENV = ROOT / ".venv"
+PYTHON_CONSTRAINT_RE = re.compile(r'^python = "\^(\d+)\.(\d+)', re.M)
+PYTHON_BINARY_RE = re.compile(r"^python3(\.\d+)?$")
 TEMPLATE_DESCRIPTION = re.compile(r"^Este projeto de boilerplate.*$", re.M)
 SLUG_RE = re.compile(r"^[a-z][a-z0-9-]*$")
 DB_NAME_RE = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
@@ -174,8 +182,142 @@ def write_env_files(values):
         print(f"  Gravado: {path.relative_to(ROOT)}")
 
 
+def required_python():
+    match = PYTHON_CONSTRAINT_RE.search(PYPROJECT.read_text(encoding="utf-8"))
+    if not match:
+        sys.exit(
+            "Não consegui ler a versão do Python exigida no pyproject.toml "
+            '(esperado algo como python = "^3.13").'
+        )
+    return int(match.group(1)), int(match.group(2))
+
+
+def python_candidates():
+    for directory in os.environ.get("PATH", "").split(os.pathsep):
+        try:
+            entries = os.listdir(directory)
+        except OSError:
+            continue
+        for entry in entries:
+            if PYTHON_BINARY_RE.match(entry):
+                yield Path(directory) / entry
+
+    pyenv_root = Path(os.environ.get("PYENV_ROOT", Path.home() / ".pyenv"))
+    yield from pyenv_root.glob("versions/*/bin/python3")
+    asdf_root = Path(os.environ.get("ASDF_DATA_DIR", Path.home() / ".asdf"))
+    yield from asdf_root.glob("installs/python/*/bin/python3")
+
+    uv = shutil.which("uv")
+    if uv:
+        major, minor = required_python()
+        result = subprocess.run(
+            [uv, "python", "find", f">={major}.{minor},<{major + 1}"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            yield Path(result.stdout.strip())
+
+
+def probe_python(executable):
+    """Executa o interpretador e devolve o caminho real e a versão dele.
+
+    Passar pelo próprio interpretador resolve shims do pyenv e symlinks, o que
+    evita listar a mesma instalação duas vezes.
+
+    Returns:
+        Tupla (caminho, (major, minor, micro)) ou None se não executar.
+    """
+    try:
+        result = subprocess.run(
+            [
+                str(executable),
+                "-c",
+                "import sys; print(sys.executable); print(*sys.version_info[:3])",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=True,
+        )
+        path, version = result.stdout.strip().splitlines()
+        return Path(path), tuple(int(part) for part in version.split())
+    except (OSError, subprocess.SubprocessError, ValueError):
+        return None
+
+
+def format_version(version):
+    return ".".join(str(part) for part in version)
+
+
+def find_venv_python():
+    """Escolhe o Python usado para criar a .venv.
+
+    Entre as versões compatíveis com o pyproject.toml, prefere a menor série
+    (a mesma do Dockerfile) e, dentro dela, o patch mais recente.
+
+    Returns:
+        Tupla (caminho, versão) do interpretador escolhido. Encerra o script
+        com uma mensagem explicativa se nenhuma versão compatível existir.
+    """
+    major, minor = required_python()
+    installed = {}
+    for candidate in python_candidates():
+        probed = probe_python(candidate)
+        if probed:
+            installed.setdefault(*probed)
+
+    compatible = [
+        (path, version)
+        for path, version in installed.items()
+        if version[0] == major and version[1] >= minor
+    ]
+    if compatible:
+        return min(compatible, key=lambda item: (item[1][1], -item[1][2]))
+
+    found = sorted({format_version(v) for v in installed.values()})
+    found_line = (
+        f"Versões encontradas nesta máquina: {', '.join(found)}."
+        if found
+        else "Nenhuma instalação do Python 3 foi encontrada nesta máquina."
+    )
+    sys.exit(
+        f"\nNão encontrei um Python compatível para criar a .venv.\n\n"
+        f"O projeto precisa do Python {major}.{minor} ou mais recente da série "
+        f'{major}.x (pyproject.toml: python = "^{major}.{minor}").\n'
+        f"{found_line}\n\n"
+        f"Para resolver, instale o Python {major}.{minor} de uma destas formas:\n"
+        f"  - pyenv: pyenv install {major}.{minor}\n"
+        f"  - uv: uv python install {major}.{minor}\n"
+        f"  - pelo gerenciador de pacotes do seu sistema operacional\n\n"
+        f"Depois rode 'make init' de novo. Se preferir seguir sem a .venv, "
+        f"responda 'não' à pergunta sobre o ambiente virtual.\n"
+        f"Nada foi alterado."
+    )
+
+
+def create_venv(python, version):
+    if VENV.exists() and not confirm(".venv já existe. Recriar?"):
+        print("  Mantido: .venv")
+        return
+    try:
+        subprocess.run(
+            [str(python), "-m", "venv", "--clear", str(VENV)],
+            check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        major_minor = format_version(version[:2])
+        print(
+            f"  Não foi possível criar a .venv com {python}.\n"
+            f"  Em Debian/Ubuntu, instale o pacote python{major_minor}-venv e "
+            f"crie manualmente: {python} -m venv .venv"
+        )
+        return
+    print(f"  Criado: .venv (Python {format_version(version)})")
+
+
 def collect():
-    print("Configuração do novo projeto\n")
     default_name = ROOT.name.replace("-", " ").replace("_", " ").title()
     project_name = ask("Nome do projeto (aparece no admin, Swagger e README)", default_name)
     default_slug = re.sub(r"[^a-z0-9-]+", "-", project_name.lower()).strip("-")
@@ -251,6 +393,15 @@ def main():
     if not all(p.exists() for p in (ENV_EXAMPLE, PYPROJECT, README, DOCKER_COMPOSE)):
         sys.exit("Execute a partir de um clone do boilerplate (arquivos base não encontrados).")
 
+    print("Configuração do novo projeto\n")
+    venv_python = None
+    if confirm("Criar o ambiente virtual .venv nesta máquina?", default=True):
+        venv_python = find_venv_python()
+        print(
+            f"  Python {format_version(venv_python[1])} encontrado em "
+            f"{venv_python[0]}\n"
+        )
+
     values = collect()
 
     print("\nResumo:")
@@ -261,6 +412,10 @@ def main():
     print(f"  Banco: {values['db_name']} (usuário {values['db_user']})")
     print(f"  Prefixo dos containers: {values['container_prefix']}")
     print("  SECRET_KEY: gerada automaticamente")
+    if venv_python:
+        print(f"  Ambiente virtual: .venv com Python {format_version(venv_python[1])}")
+    else:
+        print("  Ambiente virtual: não será criado")
 
     if not confirm("\nAplicar essas configurações?", default=True):
         sys.exit("Nada foi alterado.")
@@ -275,9 +430,16 @@ def main():
     update_docker_compose(values)
     print("  Atualizado: docker-compose.yml")
     write_env_files(values)
+    if venv_python:
+        create_venv(*venv_python)
     print()
     remove_setup_artifacts()
     print("\nPronto. Próximos passos: revisar o diff e rodar 'make build env=local'.")
+    if venv_python and VENV.exists():
+        print(
+            "Para instalar as dependências na .venv: 'poetry install --with dev' "
+            "(o Poetry usa a .venv do projeto automaticamente)."
+        )
 
 
 if __name__ == "__main__":
