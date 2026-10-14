@@ -3,8 +3,8 @@
 
 Pergunta o nome do projeto, o slug do pacote, a descrição, o autor, o banco e
 a senha, gera a SECRET_KEY e atualiza pyproject.toml, README.md e os arquivos
-de ambiente. Use apenas em um clone novo, uma vez: rodar de novo sobrescreve
-os valores anteriores.
+de ambiente. Ao final, remove a si mesmo, o alvo `init` do Makefile e a seção
+do README que explica como usá-lo. Use apenas em um clone novo, uma vez.
 
 Uso: python scripts/init_project.py
 """
@@ -218,6 +218,35 @@ def collect():
     }
 
 
+def remove_setup_artifacts():
+    # Depois de configurado, o projeto não precisa mais do script, do alvo
+    # `make init` nem da seção de instruções do README.
+    makefile = ROOT / "Makefile"
+    if makefile.exists():
+        text = makefile.read_text(encoding="utf-8")
+        text = re.sub(r"\ninit:\n\tpython3 scripts/init_project\.py\n?", "\n", text)
+        makefile.write_text(text.rstrip("\n") + "\n", encoding="utf-8")
+        print("  Removido: alvo init do Makefile")
+
+    text = README.read_text(encoding="utf-8")
+    text = re.sub(
+        r"## Criando um novo projeto\n.*?(?=^## )",
+        "",
+        text,
+        count=1,
+        flags=re.M | re.S,
+    )
+    README.write_text(text, encoding="utf-8")
+    print("  Removido: seção 'Criando um novo projeto' do README")
+
+    scripts_dir = Path(__file__).resolve().parent
+    Path(__file__).resolve().unlink()
+    print("  Removido: scripts/init_project.py")
+    if scripts_dir.exists() and not any(scripts_dir.iterdir()):
+        scripts_dir.rmdir()
+        print("  Removido: pasta scripts/ (vazia)")
+
+
 def main():
     if not all(p.exists() for p in (ENV_EXAMPLE, PYPROJECT, README, DOCKER_COMPOSE)):
         sys.exit("Execute a partir de um clone do boilerplate (arquivos base não encontrados).")
@@ -246,6 +275,8 @@ def main():
     update_docker_compose(values)
     print("  Atualizado: docker-compose.yml")
     write_env_files(values)
+    print()
+    remove_setup_artifacts()
     print("\nPronto. Próximos passos: revisar o diff e rodar 'make build env=local'.")
 
 
