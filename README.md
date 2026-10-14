@@ -2,6 +2,16 @@
 
 Este projeto de boilerplate em Django fornece uma estrutura básica para o desenvolvimento de aplicações web. Ele inclui a configuração inicial de banco de dados, autenticação de usuário, administração, etc.
 
+## Criando um novo projeto
+
+Para usar este repositório como base de um projeto novo, rode uma vez no clone:
+
+```bash
+make init
+```
+
+O script pergunta o nome do projeto, o nome do pacote, a descrição, o autor, o banco de dados (nome, usuário e senha) e gera a `SECRET_KEY`. Depois atualiza `pyproject.toml`, este README e os arquivos de ambiente (`config/settings/.env` e `.env/.env.local`). Esses arquivos não vão para o git.
+
 ## Estrutura do Projeto
 
 -  **apps/**: Diretório contendo os aplicativos Django.
