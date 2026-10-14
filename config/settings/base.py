@@ -188,13 +188,15 @@ if USE_SMTP:
     EMAIL_HOST_USER = env('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
-# Default database
+# Database
+# Formato: DATABASE_URL=postgres://user:password@host:port/name
+# Sem a variável definida, usa SQLite no arquivo db.sqlite3 na raiz do projeto.
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": env.db(
+        "DATABASE_URL",
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    )
 }
 
 # Celery

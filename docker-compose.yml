@@ -18,12 +18,11 @@ services:
   db:
     image: postgres:15
     container_name: django_web_db
+    entrypoint: ["sh", "/db-entrypoint.sh"]
+    command: ["postgres"]
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      - ./compose/local/postgres/entrypoint.sh:/db-entrypoint.sh:ro
     env_file:
       - ./.env/.env.local
   redis:
