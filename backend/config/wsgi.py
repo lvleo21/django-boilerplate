@@ -10,8 +10,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-# O .env já foi lido por config/__init__.py. Sem a variável, servidores sobem
-# com as settings de produção.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
 
 application = get_wsgi_application()
