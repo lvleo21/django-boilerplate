@@ -46,6 +46,6 @@ RUN sed -i 's/\r$//g' /start-flower.sh
 RUN chmod +x /start-flower.sh
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /app/backend
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]

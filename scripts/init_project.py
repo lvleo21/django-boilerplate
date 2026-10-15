@@ -22,13 +22,13 @@ from pathlib import Path
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parent.parent
-ENV_EXAMPLE = ROOT / "config" / "settings" / ".env-example"
+ENV_EXAMPLE = ROOT / "backend" / "config" / "settings" / ".env-example"
 PYPROJECT = ROOT / "pyproject.toml"
 README = ROOT / "README.md"
-# O Django lê config/settings/.env (local, fora do Docker) e o compose lê
+# O Django lê backend/config/settings/.env (local, fora do Docker) e o compose lê
 # .env/.env.local. Os dois recebem os mesmos valores, mudando só o host.
 ENV_TARGETS = {
-    ROOT / "config" / "settings" / ".env": "127.0.0.1",
+    ROOT / "backend" / "config" / "settings" / ".env": "127.0.0.1",
     ROOT / ".env" / ".env.local": "db",
 }
 DOCKER_COMPOSE = ROOT / "docker-compose.yml"
@@ -426,7 +426,7 @@ def main():
     update_readme(values)
     print("  Atualizado: README.md")
     update_env_example(values)
-    print("  Atualizado: config/settings/.env-example")
+    print("  Atualizado: backend/config/settings/.env-example")
     update_docker_compose(values)
     print("  Atualizado: docker-compose.yml")
     write_env_files(values)

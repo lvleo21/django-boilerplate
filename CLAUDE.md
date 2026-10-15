@@ -7,6 +7,11 @@
 - Código existente fora do padrão encontrado durante uma tarefa: apontar, nunca replicar. Corrigir só se fizer parte da tarefa ou se for pedido.
 - Dúvida sobre onde algo entra, caso não coberto ou regra que pareça errada para um caso: parar e perguntar (ver Casos não cobertos). Nunca decidir por conta própria.
 
+## Estrutura do repositório
+
+- `backend/`: projeto Django (`manage.py`, `config/`, `apps/`). Os caminhos de backend citados neste documento e nos `CLAUDE.md` dos apps (`core/...`, `<app>/...`) são relativos a `backend/apps/`; `config/...` é relativo a `backend/`.
+- Raiz: ferramentas e configuração compartilhadas (`pyproject.toml`, `poetry.lock`, `Makefile`, `docker-compose.yml`, `compose/`, `scripts/`, `.agents/`). Comandos rodam a partir da raiz: `python backend/manage.py <comando>`. No Docker, o diretório de trabalho já é `backend/`.
+
 ## Organização de um app
 
 Organizar por domínio (um app por contexto), e dentro de cada app por camada. Começar com arquivo único (`models.py`, `services.py`…) e virar pacote quando crescer (~400–500 linhas). Exceção: `choices.py` existe desde o início em todo app.
