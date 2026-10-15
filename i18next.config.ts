@@ -6,7 +6,7 @@ export default defineConfig({
   locales: ["pt-BR"],
   extract: {
     input: ["frontend/**/*.{ts,tsx}"],
-    ignore: ["frontend/**/*.test.{ts,tsx}", "frontend/test/**", "frontend/dist/**"],
+    ignore: ["frontend/**/*.test.{ts,tsx}", "frontend/tests/**", "frontend/dist/**"],
     output: "frontend/locales/{{language}}.json",
     defaultNS: false,
     keySeparator: false,

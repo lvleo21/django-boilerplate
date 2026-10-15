@@ -17,6 +17,6 @@
       "@/*": ["./frontend/*"]
     }
   },
-  "include": ["frontend", "vite.config.ts", "i18next.config.ts"],
+  "include": ["frontend", "e2e", "vite.config.ts", "playwright.config.ts", "i18next.config.ts"],
   "exclude": ["frontend/dist"]
 }

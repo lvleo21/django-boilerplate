@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-type WelcomeProps = {
+export type WelcomeProps = {
   project_name: string;
   django_version: string;
   admin_url: string;
