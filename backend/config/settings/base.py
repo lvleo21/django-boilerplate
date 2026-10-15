@@ -1,9 +1,13 @@
+import hashlib
 import os
 from pathlib import Path
 import environ
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Raiz do repositório: guarda o frontend/ e o build do Vite.
+ROOT_DIR = BASE_DIR.parent.parent
 
 env = environ.Env()
 
@@ -41,6 +45,8 @@ EXTERNAL_APPS = [
     "rosetta",
     "drf_yasg",
     "django_celery_beat",
+    "django_vite",
+    "inertia",
 ]
 
 PROJECT_APPS = [
@@ -60,6 +66,8 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "inertia.middleware.InertiaMiddleware",
+    "apps.core.middlewares.inertia.inertia_share",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -133,6 +141,40 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# Saída do build do Vite (vite.config.ts: build.outDir).
+STATICFILES_DIRS = [ROOT_DIR / "frontend" / "dist"]
+
+# frontend/dist/ só existe depois do `yarn build`.
+SILENCED_SYSTEM_CHECKS = ["staticfiles.W004"]
+
+# Vite
+# https://github.com/MrBin99/django-vite
+
+VITE_MANIFEST_PATH = ROOT_DIR / "frontend" / "dist" / "manifest.json"
+
+DJANGO_VITE = {
+    "default": {
+        # Com DEBUG, os assets vêm do servidor do Vite (`yarn dev`); sem,
+        # do manifest gerado pelo `yarn build`.
+        "dev_mode": DEBUG,
+        "manifest_path": VITE_MANIFEST_PATH,
+    }
+}
+
+# Inertia
+# https://inertiajs.github.io/inertia-django/
+
+INERTIA_LAYOUT = "core/layouts/base.html"
+
+# A versão dos assets muda a cada build para que clientes com assets antigos
+# recebam um reload completo da página. Constante sem build (modo dev do Vite).
+try:
+    INERTIA_VERSION = hashlib.md5(
+        VITE_MANIFEST_PATH.read_bytes(), usedforsecurity=False
+    ).hexdigest()
+except FileNotFoundError:
+    INERTIA_VERSION = "dev"
 
 # Media
 

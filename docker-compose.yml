@@ -15,6 +15,18 @@ services:
     depends_on:
       - redis
       - db
+      - vite
+  vite:
+    image: node:24-alpine
+    container_name: django_web_vite
+    working_dir: /app
+    command: sh -c "yarn install --frozen-lockfile && yarn dev"
+    volumes:
+      - .:/app
+      # node_modules do container, separado do host (binários nativos por plataforma).
+      - node_modules:/app/node_modules
+    ports:
+      - 5173:5173
   db:
     image: postgres:15
     container_name: django_web_db
@@ -75,3 +87,4 @@ services:
 
 volumes:
   postgres_data:
+  node_modules:

@@ -10,7 +10,8 @@
 ## Estrutura do repositório
 
 - `backend/`: projeto Django (`manage.py`, `config/`, `apps/`). Os caminhos de backend citados neste documento e nos `CLAUDE.md` dos apps (`core/...`, `<app>/...`) são relativos a `backend/apps/`; `config/...` é relativo a `backend/`.
-- Raiz: ferramentas e configuração compartilhadas (`pyproject.toml`, `poetry.lock`, `Makefile`, `docker-compose.yml`, `compose/`, `scripts/`, `.agents/`). Comandos rodam a partir da raiz: `python backend/manage.py <comando>`. No Docker, o diretório de trabalho já é `backend/`.
+- `frontend/`: código React/Inertia (alias `@`). Ver Frontend.
+- Raiz: ferramentas e configuração compartilhadas (`pyproject.toml`, `poetry.lock`, `package.json`, `yarn.lock`, `vite.config.ts`, `tsconfig.json`, `components.json`, `i18next.config.ts`, `Makefile`, `docker-compose.yml`, `compose/`, `scripts/`, `.agents/`). Comandos rodam a partir da raiz: `python backend/manage.py <comando>`. No Docker, o diretório de trabalho já é `backend/`.
 
 ## Organização de um app
 
@@ -27,6 +28,7 @@ Organizar por domínio (um app por contexto), e dentro de cada app por camada. C
 | `tasks/` | Por propósito (notifications, sync, periodic) | Tasks Celery finas que chamam services |
 | `views/` | Por interface (`api/`, `web/`), depois por entidade | Cola de HTTP |
 | `forms/` | Arquivos por entidade; um form por caso de uso | Validação de entrada |
+| `middlewares/` | Pacote desde o início, um arquivo por middleware | Cola de request/response comum a várias views |
 
 ### Observações
 
@@ -41,6 +43,7 @@ Organizar por domínio (um app por contexto), e dentro de cada app por camada. C
 9. Selectors: argumentos só por keyword (`*`), nome no formato `<entidade>_<ação>` (`order_list`, `order_detail`). Não criar selector para query trivial sem regra.
 10. Views de API: ViewSet para CRUD simples; APIView por endpoint, com serializers de entrada e saída aninhados, quando houver regra de negócio.
 11. Forms validam entrada; a ação fica no service. Não colocar regra em `form.save()`. Erros do service vão para o form com `form.add_error(None, ...)`.
+12. Middlewares transversais (ex.: props compartilhadas do Inertia) ficam em `core/middlewares/`. Como views, são finos: regra de negócio vai para service/selector.
 
 ## Regras de negócio: model vs service
 
@@ -206,6 +209,31 @@ def get_paginated_response(*, serializer_class, queryset, request, view, paginat
         return paginator.get_paginated_response(serializer_class(page, many=True).data)
     return Response(serializer_class(queryset, many=True).data)
 ```
+
+## Frontend (Inertia + React)
+
+Páginas são componentes React renderizados pelo Django via Inertia, empacotados pelo Vite e estilizados com Tailwind CSS v4 e shadcn/ui.
+
+| Arquivo | Conteúdo |
+|---|---|
+| `frontend/main.tsx` | `createInertiaApp`: resolve as páginas, inicia o i18n e usa os nomes de cookie/header de CSRF do Django |
+| `frontend/pages/<Componente>.tsx` | Uma página por componente Inertia (`"Orders/Index"` → `pages/Orders/Index.tsx`) |
+| `frontend/components/ui/` | Componentes do shadcn/ui |
+| `frontend/components/` | Componentes do app (arquivos em kebab-case) |
+| `frontend/lib/` | Helpers (`i18n.ts`, `pages.ts`, `utils.ts`) |
+| `frontend/types/inertia.d.ts` | Tipos das props compartilhadas |
+| `frontend/app.css` | Tailwind e tema do shadcn (variáveis CSS); único CSS global |
+| `core/middlewares/inertia.py` | `inertia_share`: props compartilhadas com toda página (`errors`, `language`) |
+| `core/templates/core/layouts/base.html` | Layout Inertia (`INERTIA_LAYOUT`) com as tags do django-vite |
+
+- Views web renderizam páginas com `@inertia("<Componente>")` (a view devolve o dict de props) ou `inertia.render(request, "<Componente>", props={...})`. Não criar API JSON nem roteamento no cliente para páginas.
+- Cada página tem `export default` e props tipadas.
+- Props compartilhadas: ao mudar `inertia_share`, atualizar `frontend/types/inertia.d.ts` na mesma tarefa.
+- URLs internas nunca fixas no TSX: vêm como props montadas com `reverse()`. Inertia `<Link>` para páginas Inertia; `<a>` para o resto (ex.: admin).
+- Assets seguem o `DEBUG`: com `DEBUG=True`, vêm do servidor do Vite (`yarn dev`, serviço `vite` do compose); sem, de `frontend/dist/manifest.json` (`yarn build`). `INERTIA_VERSION` é o hash do manifest.
+- Tailwind sem `tailwind.config.js`: o tema fica em `frontend/app.css`.
+- shadcn/ui no estilo `base-nova` (Base UI, não Radix): elementos customizados usam a prop `render`, não `asChild`. Adicionar componentes com `npx shadcn@latest add <componente>`.
+- Dependências do frontend com Yarn 1 (`yarn add`, `yarn add -D` para ferramentas de build e tipos). Nunca npm.
 
 ## CLAUDE.md
 

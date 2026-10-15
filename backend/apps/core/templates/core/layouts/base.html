@@ -1,22 +1,18 @@
-{% load static %}
+{% load django_vite i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ LANGUAGE_CODE }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
-
-    {% block css %}
-    {% endblock %}
+    {% vite_hmr_client %}
+    {% vite_react_refresh %}
+    {% vite_asset "frontend/main.tsx" %}
 </head>
 
-<body class="{% block style %}{% endblock %}">
-    {% block content %}
-    {% endblock %}
-
-    {% block js %}
-    {% endblock %}
+<body>
+    {% block inertia %}{% endblock inertia %}
 </body>
 
 </html>
