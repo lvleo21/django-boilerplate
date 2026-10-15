@@ -1,3 +1,5 @@
+![django-boilerplate: boilerplate para projetos Django com Inertia.js](.github/assets/django-boilerplate-cover.png)
+
 # Django Boilerplate
 
 Este projeto de boilerplate em Django fornece uma estrutura básica para o desenvolvimento de aplicações web: backend Django com Celery e API REST, frontend React servido via Inertia.js e Vite, testes em três níveis e regras de arquitetura para desenvolvimento orientado a IA.
@@ -46,6 +48,7 @@ Ao final, o script remove a si mesmo, o alvo `make init` e esta seção do READM
 
 ```
 .
+├── .github/assets/          # Imagens do README
 ├── backend/                 # Projeto Django
 │   ├── apps/                # Apps por domínio (account, core, upload)
 │   │   └── <app>/
