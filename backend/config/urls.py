@@ -5,44 +5,33 @@ from django.views.static import serve
 from apps.core.sites import admin_site
 from config.settings.swagger import schema_view
 
-
 urlpatterns = [
     # Apps
     path("", include("apps.urls")),
-
     # Admin
     path("staff/", admin_site.urls),
-
     # Rosetta
-    re_path("rosetta/", include('rosetta.urls')),
-
+    re_path("rosetta/", include("rosetta.urls")),
     # Media
-    re_path(
-        r'^media/(?P<path>.*)$',
-        serve,
-        {'document_root': settings.MEDIA_ROOT}
-    ),
-
+    re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     # Static
-    re_path(
-        r'^static/(?P<path>.*)$',
-        serve,
-        {'document_root': settings.STATIC_ROOT}
-    ),
+    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]
 
 # Swagger
 
 if settings.USE_SWAGGER:
-    urlpatterns.extend([
-        path(
-            "swagger/",
-            schema_view.with_ui("swagger", cache_timeout=0),
-            name="schema-swagger-ui",
-        ),
-        path(
-            "redoc/",
-            schema_view.with_ui("redoc", cache_timeout=0),
-            name="schema-redoc"
-        ),
-    ])
+    urlpatterns.extend(
+        [
+            path(
+                "swagger/",
+                schema_view.with_ui("swagger", cache_timeout=0),
+                name="schema-swagger-ui",
+            ),
+            path(
+                "redoc/",
+                schema_view.with_ui("redoc", cache_timeout=0),
+                name="schema-redoc",
+            ),
+        ]
+    )

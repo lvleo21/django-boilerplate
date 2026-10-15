@@ -1,4 +1,4 @@
-from rest_framework import serializers, exceptions
+from rest_framework import exceptions, serializers
 
 from apps.upload.services import FileUploadService
 
@@ -11,16 +11,10 @@ class UploadSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         try:
-            upload, presigned_url = (
-                FileUploadService.create_file_upload(
-                    name=validated_data.get("name"),
-                )
+            upload, presigned_url = FileUploadService.create_file_upload(
+                name=validated_data.get("name"),
             )
-        except Exception:
-            raise exceptions.ValidationError()
+        except Exception as err:
+            raise exceptions.ValidationError() from err
 
-        return {
-            "url": presigned_url,
-            "pk": upload.pk,
-            "path": upload.path.url
-        }
+        return {"url": presigned_url, "pk": upload.pk, "path": upload.path.url}

@@ -1,20 +1,12 @@
-from __future__ import absolute_import, unicode_literals
 import os
 
 from celery import Celery
-from config.settings.base import ENVIRONMENT
 
-os.environ.setdefault(
-    "DJANGO_SETTINGS_MODULE",
-    f"config.settings.{ENVIRONMENT}"
-)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 
-app = Celery(f"django_celery_{ENVIRONMENT}")
+app = Celery("config")
 app.conf.enable_utc = False
 
-app.config_from_object(
-    "django.conf:settings",
-    namespace="CELERY"
-)
+app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.autodiscover_tasks()

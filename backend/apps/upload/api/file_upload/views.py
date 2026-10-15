@@ -10,6 +10,5 @@ class UploadView(generics.CreateAPIView):
 
     def get_serializer_context(self, **kwargs):
         context = super().get_serializer_context(**kwargs)
-        context['entity'] = self.request.user.entity
-        context['user'] = self.request.user
+        context["user"] = self.request.user
         return context

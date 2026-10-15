@@ -1,6 +1,5 @@
 from config.settings.base import *
 
-
 # Storage
 
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
@@ -37,15 +36,13 @@ STORAGES = {
             **AWS_OPTIONS,
             "object_parameters": {
                 "CacheControl": f"max-age={AWS_S3_MAX_AGE}",
-            }
+            },
         },
     },
     "staticfiles": {
         "BACKEND": "apps.core.storages.StaticRootS3BotoStorage",
-        "OPTIONS": {
-            **AWS_OPTIONS
-        }
-    }
+        "OPTIONS": {**AWS_OPTIONS},
+    },
 }
 
 # Static

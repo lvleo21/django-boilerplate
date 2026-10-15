@@ -1,5 +1,5 @@
-from django.utils.translation import gettext_lazy as _
 from django.contrib.admin import StackedInline
+from django.utils.translation import gettext_lazy as _
 
 from apps.account.models import Profile
 

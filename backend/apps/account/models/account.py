@@ -1,7 +1,7 @@
 import re
 
-from django.core import validators
 from django.contrib.auth.models import AbstractUser
+from django.core import validators
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -26,11 +26,7 @@ class Account(BaseModel, AbstractUser):
             )
         ],
     )
-    email = models.EmailField(
-        _("E-mail"),
-        max_length=255,
-        unique=True
-    )
+    email = models.EmailField(_("E-mail"), max_length=255, unique=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]

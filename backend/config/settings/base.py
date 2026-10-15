@@ -1,8 +1,8 @@
 import hashlib
 import os
 from pathlib import Path
-import environ
 
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,7 +11,8 @@ ROOT_DIR = BASE_DIR.parent.parent
 
 env = environ.Env()
 
-environ.Env.read_env(os.path.join(BASE_DIR, 'settings/.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, "settings/.env"))
+
 
 SECRET_KEY = env("SECRET_KEY")
 
@@ -19,15 +20,12 @@ DEBUG = env("DEBUG", default=True, cast=bool)
 
 VERSION = env("VERSION", default="0.1.0")
 
-ENVIRONMENT = env("ENVIRONMENT", default="development")
-
 PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
 CSRF_TRUSTED_ORIGINS = env.list(
-    "CSRF_TRUSTED_ORIGINS",
-    default=["https://0.0.0.0:8000"]
+    "CSRF_TRUSTED_ORIGINS", default=["https://0.0.0.0:8000"]
 )
 
 DJANGO_APPS = [
@@ -82,7 +80,7 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages"
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -93,27 +91,17 @@ WSGI_APPLICATION = "config.wsgi.application"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": (
-            "django.contrib.auth.password_validation."
-            "UserAttributeSimilarityValidator"
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
         ),
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "MinimumLengthValidator"
-        ),
+        "NAME": ("django.contrib.auth.password_validation.MinimumLengthValidator"),
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "CommonPasswordValidator"
-        ),
+        "NAME": ("django.contrib.auth.password_validation.CommonPasswordValidator"),
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "NumericPasswordValidator"
-        ),
+        "NAME": ("django.contrib.auth.password_validation.NumericPasswordValidator"),
     },
 ]
 
@@ -124,8 +112,8 @@ LOCALE_PATHS = [
 ]
 
 LANGUAGES = [
-    ('pt-br', 'PT-BR'),
-    ('en', 'EN'),
+    ("pt-br", "PT-BR"),
+    ("en", "EN"),
 ]
 
 LANGUAGE_CODE = "pt-br"
@@ -194,28 +182,15 @@ AUTH_USER_MODEL = "account.Account"
 USE_SWAGGER = env("USE_SWAGGER", default=False, cast=bool)
 
 if USE_SWAGGER:
-    SWAGGER_SETTINGS = {
-        'SECURITY_DEFINITIONS': {
-            'Basic': {
-                'type': 'basic'
-            }
-        }
-    }
+    SWAGGER_SETTINGS = {"SECURITY_DEFINITIONS": {"Basic": {"type": "basic"}}}
 
     SWAGGER_OPENAPI_TERM_OF_SERVICE = env(
-        "SWAGGER_OPENAPI_TERM_OF_SERVICE",
-        default="Insert term"
+        "SWAGGER_OPENAPI_TERM_OF_SERVICE", default="Insert term"
     )
 
-    SWAGGER_OPENAPI_CONTACT = env(
-        "SWAGGER_OPENAPI_CONTACT",
-        default="Insert contact"
-    )
+    SWAGGER_OPENAPI_CONTACT = env("SWAGGER_OPENAPI_CONTACT", default="Insert contact")
 
-    SWAGGER_OPENAPI_LICENSE = env(
-        "SWAGGER_OPENAPI_LICENSE",
-        default="Insert license"
-    )
+    SWAGGER_OPENAPI_LICENSE = env("SWAGGER_OPENAPI_LICENSE", default="Insert license")
 
 # SMTP
 
@@ -223,12 +198,12 @@ USE_SMTP = env("USE_SMTP", default=False, cast=bool)
 
 if USE_SMTP:
     EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = env('EMAIL_HOST')
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = env("EMAIL_HOST")
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 # Database
 # Formato: DATABASE_URL=postgres://user:password@host:port/name
