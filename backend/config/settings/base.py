@@ -19,8 +19,6 @@ DEBUG = env("DEBUG", default=True, cast=bool)
 
 VERSION = env("VERSION", default="0.1.0")
 
-ENVIRONMENT = env("ENVIRONMENT", default="development")
-
 PROJECT_NAME = env("PROJECT_NAME", default="PROJECT NAME")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])

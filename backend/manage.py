@@ -3,13 +3,17 @@
 
 import os
 import sys
+from pathlib import Path
 
-from config.settings.base import ENVIRONMENT
+import environ
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"config.settings.{ENVIRONMENT}")
+    # Lido antes de escolher as settings, para que o DJANGO_SETTINGS_MODULE
+    # possa vir do .env. Variáveis já definidas no ambiente têm prioridade.
+    environ.Env.read_env(Path(__file__).resolve().parent / "config/settings/.env")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 
     try:
         from django.core.management import execute_from_command_line
