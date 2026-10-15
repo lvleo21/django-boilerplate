@@ -17,9 +17,8 @@ class CustomAdminSite(admin.AdminSite):
         return context
 
     def get_site_header(self):
-        return (
-            f"{self.site_title} - {settings.ENVIRONMENT.upper()} (v{settings.VERSION})"
-        )
+        environment = settings.SETTINGS_MODULE.rsplit(".", 1)[-1]
+        return f"{self.site_title} - {environment.upper()} (v{settings.VERSION})"
 
 
 admin_site = CustomAdminSite()

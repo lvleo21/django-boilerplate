@@ -7,11 +7,14 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 """
 
 import os
+from pathlib import Path
 
+import environ
 from django.core.asgi import get_asgi_application
 
-from config.settings.base import ENVIRONMENT
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"config.settings.{ENVIRONMENT}")
+# Lido antes de escolher as settings, para que o DJANGO_SETTINGS_MODULE
+# possa vir do .env. Sem a variável, servidores sobem com as de produção.
+environ.Env.read_env(Path(__file__).resolve().parent / "settings/.env")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
 
 application = get_asgi_application()
