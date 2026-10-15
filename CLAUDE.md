@@ -202,13 +202,21 @@ class BasePagination(PageNumberPagination):
         )
 
 
-def get_paginated_response(*, serializer_class, queryset, request, view, pagination_class=BasePagination):
+def get_paginated_response(
+    *, serializer_class, queryset, request, view, pagination_class=BasePagination
+):
     paginator = pagination_class()
     page = paginator.paginate_queryset(queryset, request, view=view)
     if page is not None:
         return paginator.get_paginated_response(serializer_class(page, many=True).data)
     return Response(serializer_class(queryset, many=True).data)
 ```
+
+## Lint e formatação
+
+- Python: ruff para lint e formatação, configurado no `pyproject.toml` (linha de 88, regras E, W, F, I, B, UP, SIM, DJ e INT). Migrations ficam de fora.
+- `make format` corrige o que dá e formata; `make lint` só verifica. Rodar os dois antes de entregar: código entregue passa no `make lint`.
+- Precisa do grupo dev do Poetry: `poetry install --with dev`.
 
 ## Frontend (Inertia + React)
 

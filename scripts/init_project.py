@@ -187,7 +187,9 @@ def update_env_example(values):
 def write_env_files(values):
     template = ENV_EXAMPLE.read_text(encoding="utf-8")
     for path, host in ENV_TARGETS.items():
-        if path.exists() and not confirm(f"{path.relative_to(ROOT)} já existe. Sobrescrever?"):
+        if path.exists() and not confirm(
+            f"{path.relative_to(ROOT)} já existe. Sobrescrever?"
+        ):
             print(f"  Mantido: {path.relative_to(ROOT)}")
             continue
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -332,7 +334,9 @@ def create_venv(python, version):
 
 def collect():
     default_name = ROOT.name.replace("-", " ").replace("_", " ").title()
-    project_name = ask("Nome do projeto (aparece no admin, Swagger e README)", default_name)
+    project_name = ask(
+        "Nome do projeto (aparece no admin, Swagger e README)", default_name
+    )
     default_slug = re.sub(r"[^a-z0-9-]+", "-", project_name.lower()).strip("-")
     slug = ask(
         "Nome do pacote (pyproject.toml e package.json)",
@@ -340,7 +344,9 @@ def collect():
         validate=lambda v: bool(SLUG_RE.match(v)),
         hint="Minúsculas, números e hífens, começando por letra.",
     )
-    description = ask("Descrição do projeto", "Projeto criado a partir do django-boilerplate")
+    description = ask(
+        "Descrição do projeto", "Projeto criado a partir do django-boilerplate"
+    )
     author_name = ask("Autor")
     author_email = ask("E-mail do autor")
     db_default = slug.replace("-", "_")
@@ -403,8 +409,13 @@ def remove_setup_artifacts():
 
 
 def main():
-    if not all(p.exists() for p in (ENV_EXAMPLE, PYPROJECT, PACKAGE_JSON, README, DOCKER_COMPOSE)):
-        sys.exit("Execute a partir de um clone do boilerplate (arquivos base não encontrados).")
+    if not all(
+        p.exists()
+        for p in (ENV_EXAMPLE, PYPROJECT, PACKAGE_JSON, README, DOCKER_COMPOSE)
+    ):
+        sys.exit(
+            "Execute a partir de um clone do boilerplate (arquivos base não encontrados)."
+        )
 
     print("Configuração do novo projeto\n")
     venv_python = None

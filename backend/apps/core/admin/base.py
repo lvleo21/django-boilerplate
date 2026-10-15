@@ -2,7 +2,7 @@ from django.contrib.admin import ModelAdmin
 
 
 class BaseAdmin(ModelAdmin):
-    ordering = ('-created_at',)
+    ordering = ("-created_at",)
 
     def get_list_display(self, request):
         list_display = list(super().get_list_display(request))
@@ -17,7 +17,4 @@ class BaseAdmin(ModelAdmin):
         return list_field
 
     def __can_append_is_active(self, list_type):
-        return (
-            hasattr(self.model, 'is_active')
-            and "__all__" not in list_type
-        )
+        return hasattr(self.model, "is_active") and "__all__" not in list_type

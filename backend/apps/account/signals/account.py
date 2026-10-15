@@ -11,6 +11,4 @@ def create_account_profile(sender, instance, created, **kwargs):
     """
 
     if not hasattr(instance, "profile"):
-        Profile.objects.create(
-            account=instance
-        )
+        Profile.objects.create(account=instance)

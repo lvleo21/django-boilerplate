@@ -7,7 +7,6 @@ from apps.account.models import Account
 from apps.core.admin import BaseAdmin
 from apps.core.sites import admin_site
 
-
 admin_site.unregister(Group)
 
 
@@ -20,11 +19,7 @@ class AccountAdmin(UserAdmin, BaseAdmin):
         "is_active",
         "created_at",
     ]
-    list_filter = [
-        "is_staff",
-        "is_superuser",
-        "is_active"
-    ]
+    list_filter = ["is_staff", "is_superuser", "is_active"]
     search_fields = ["email", "username"]
     ordering = ["username"]
     inlines = [ProfileInline]
@@ -45,8 +40,8 @@ class AccountAdmin(UserAdmin, BaseAdmin):
                     "usable_password",
                     "is_staff",
                     "is_superuser",
-                )
-            }
+                ),
+            },
         )
     ]
 
@@ -57,5 +52,4 @@ class AccountAdmin(UserAdmin, BaseAdmin):
 
 
 @admin.register(Group, site=admin_site)
-class GroupAdmin(GroupAdmin, BaseAdmin):
-    ...
+class GroupAdmin(GroupAdmin, BaseAdmin): ...
