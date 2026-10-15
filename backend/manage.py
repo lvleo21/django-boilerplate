@@ -3,16 +3,14 @@
 
 import os
 import sys
-from pathlib import Path
 
-import environ
+# Lê o .env (config/__init__.py) antes do padrão abaixo, para que um
+# DJANGO_SETTINGS_MODULE vindo dele vença.
+import config  # noqa: F401
 
 
 def main():
     """Run administrative tasks."""
-    # Lido antes de escolher as settings, para que o DJANGO_SETTINGS_MODULE
-    # possa vir do .env. Variáveis já definidas no ambiente têm prioridade.
-    environ.Env.read_env(Path(__file__).resolve().parent / "config/settings/.env")
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 
     try:
