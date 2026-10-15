@@ -1,13 +1,8 @@
-import os
-from pathlib import Path
-
-import environ
 from celery import Celery
 
-# Como em wsgi.py: o .env pode escolher o módulo de settings, então é lido antes.
-environ.Env.read_env(Path(__file__).resolve().parent / "settings/.env")
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
-
+# Sem padrão para o DJANGO_SETTINGS_MODULE: este módulo roda em todo import de
+# `config` (config/__init__.py), inclusive pelo manage.py, e um padrão aqui
+# venceria o dele. O worker usa o do ambiente ou do .env.
 app = Celery("config")
 app.conf.enable_utc = False
 
