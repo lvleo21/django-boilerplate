@@ -57,11 +57,12 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "*/migrations/*.py" = ["E501"]
-"config/settings/production.py" = ["F405", "F403"]
-"config/settings/development.py" = ["F405", "F403"]
+"backend/config/settings/prod.py" = ["F405", "F403"]
+"backend/config/settings/local.py" = ["F405", "F403"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.base"
+pythonpath = ["backend"]
 python_files = ["test*.py", "*.p_testy"]
 
 [build-system]
