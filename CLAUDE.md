@@ -11,7 +11,7 @@
 
 - `backend/`: projeto Django (`manage.py`, `config/`, `apps/`). Os caminhos de backend citados neste documento e nos `CLAUDE.md` dos apps (`core/...`, `<app>/...`) são relativos a `backend/apps/`; `config/...` é relativo a `backend/`.
 - `frontend/`: código React/Inertia (alias `@`). Ver Frontend.
-- Raiz: ferramentas e configuração compartilhadas (`pyproject.toml`, `poetry.lock`, `package.json`, `yarn.lock`, `vite.config.ts`, `tsconfig.json`, `components.json`, `i18next.config.ts`, `Makefile`, `docker-compose.yml`, `compose/`, `scripts/`, `.agents/`). Comandos rodam a partir da raiz: `python backend/manage.py <comando>`. No Docker, o diretório de trabalho já é `backend/`.
+- Raiz: ferramentas e configuração compartilhadas (`pyproject.toml`, `poetry.lock`, `package.json`, `yarn.lock`, `vite.config.ts`, `tsconfig.json`, `components.json`, `i18next.config.ts`, `playwright.config.ts`, `e2e/`, `Makefile`, `docker-compose.yml`, `compose/`, `scripts/`, `.agents/`). Comandos rodam a partir da raiz: `python backend/manage.py <comando>`. No Docker, o diretório de trabalho já é `backend/`.
 
 ## Settings
 
@@ -35,6 +35,7 @@ Organizar por domínio (um app por contexto), e dentro de cada app por camada. C
 | `views/` | Por interface (`api/`, `web/`), depois por entidade | Cola de HTTP |
 | `forms/` | Arquivos por entidade; um form por caso de uso | Validação de entrada |
 | `middlewares/` | Pacote desde o início, um arquivo por middleware | Cola de request/response comum a várias views |
+| `tests/` | Pacote desde o início: `unit/` e `integration/`, com `test_<módulo>.py` | Testes do app (ver Testes) |
 
 ### Observações
 
@@ -217,6 +218,25 @@ def get_paginated_response(
         return paginator.get_paginated_response(serializer_class(page, many=True).data)
     return Response(serializer_class(queryset, many=True).data)
 ```
+
+## Testes
+
+Três níveis, separados por pasta. Todo comportamento novo ou alterado entra com teste no nível mais baixo que o cobre.
+
+| Nível | Backend (pytest + pytest-django) | Frontend (Vitest + Testing Library) |
+|---|---|---|
+| Unidade | `<app>/tests/unit/`: código isolado, sem banco nem client HTTP (properties, `clean()`, validators, helpers). O pytest-django bloqueia o banco | `*.test.ts(x)` ao lado do código: componentes, hooks e `lib/` |
+| Integração | `<app>/tests/integration/`: banco (`@pytest.mark.django_db`), views pelo `client`/`inertia_client`, services e selectors | `frontend/tests/integration/`: páginas Inertia renderizadas com `renderPage(inertiaPage(...))`, HTTP via MSW |
+| E2E | `e2e/*.spec.ts`: Playwright no navegador contra o Django real (`testserver`, SQLite em memória, fixtures `e2e_*`) + Vite. Uma suíte só, cobrindo front e back | |
+
+- **Um assert por teste**: um `assert`, `pytest.raises` ou `expect` por teste. Para verificar várias coisas do mesmo cenário, um teste para cada, com o cenário montado em fixture (pytest) ou helper (`renderWelcome()`). No e2e, ações e esperas implícitas do Playwright (`click`, `fill`) não contam como assert.
+- Nome do teste descreve o comportamento: `test_<o_que>_<resultado>` no pytest, frase no Vitest/Playwright.
+- Mock só nas fronteiras do sistema: APIs externas, S3, e-mail. No frontend, a fronteira é o HTTP para o Django (MSW, `frontend/tests/server.ts`; requisição sem handler falha).
+- Ao cobrir comportamento que já existe, provar que o teste falha: quebrar o comportamento, ver vermelho, restaurar.
+- Backend: settings `config.settings.test`; o pytest marca cada teste como `unit` ou `integration` pela pasta (`backend/conftest.py`). Fixture `inertia_client`: visita Inertia, a resposta é o JSON da página.
+- Frontend: buscar por role/label (nomes acessíveis em pt-BR, como na UI). `frontend/tests/inertia.tsx` tipa as props de cada página em `PagePropsByComponent`; página nova exporta o tipo das props e ganha uma entrada lá.
+- E2E: fixtures em `<app>/fixtures/e2e_*.json`, carregadas no `testserver` pelo `playwright.config.ts`. Senhas de fixture com o hasher MD5 de `config.settings.test`. Assert em roles e URLs, não em mensagens traduzidas do Django.
+- Comandos: `make test-unit`, `make test-integration`, `make test-e2e` ou `make test` (os três). O e2e precisa do Chromium do Playwright: `yarn playwright install chromium`.
 
 ## Lint e formatação
 

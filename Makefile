@@ -19,3 +19,16 @@ lint:
 format:
 	poetry run ruff check --fix .
 	poetry run ruff format .
+
+test: test-unit test-integration test-e2e
+
+test-unit:
+	poetry run pytest -m unit
+	yarn test:unit
+
+test-integration:
+	poetry run pytest -m integration
+	yarn test:integration
+
+test-e2e:
+	yarn test:e2e

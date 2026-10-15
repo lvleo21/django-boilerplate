@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { fileURLToPath, URL } from "node:url";
 
 import tailwindcss from "@tailwindcss/vite";
@@ -22,6 +23,29 @@ export default defineConfig({
     // Assets referenciados em CSS/JS vêm do servidor do Vite, não da origem
     // do Django.
     origin: "http://localhost:5173",
+  },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["frontend/tests/setup.ts"],
+    // Folga para os findBy* em imports de página a frio (tests/setup.ts).
+    testTimeout: 15_000,
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          include: ["frontend/**/*.test.{ts,tsx}"],
+          exclude: ["frontend/tests/integration/**"],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "integration",
+          include: ["frontend/tests/integration/**/*.test.{ts,tsx}"],
+        },
+      },
+    ],
   },
   build: {
     // Incluído no STATICFILES_DIRS do Django.

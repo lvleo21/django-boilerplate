@@ -1,0 +1,16 @@
+[
+  {
+    "model": "account.account",
+    "pk": "00000000-0000-4000-8000-0000000e2e01",
+    "fields": {
+      "username": "e2e_admin",
+      "email": "e2e_admin@example.com",
+      "password": "md5$e2esalt$1c2594d7f597ada275f46e27dc77c97d",
+      "is_staff": true,
+      "is_superuser": true,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  }
+]

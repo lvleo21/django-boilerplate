@@ -29,9 +29,10 @@ inertia-django = "^2.0.0"
 django-vite = "^3.2.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.3"
-pytest-django = "^4.9.0"
+pytest = "^9.1.1"
+pytest-django = "^4.14.0"
 ruff = "^0.16.10"
+pytest-env = "^1.8.0"
 
 [tool.poetry.group.dev]
 optional = true
@@ -62,15 +63,26 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 # Settings por ambiente herdam tudo de base.py com `import *`.
-"backend/config/settings/{local,prod}.py" = ["F403", "F405"]
+"backend/config/settings/{local,prod,test}.py" = ["F403", "F405"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["apps", "config"]
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings.base"
+DJANGO_SETTINGS_MODULE = "config.settings.test"
 pythonpath = ["backend"]
-python_files = ["test*.py", "*.p_testy"]
+testpaths = ["backend"]
+python_files = ["test_*.py"]
+addopts = "--strict-markers"
+# O base.py exige SECRET_KEY, e o pytest-django carrega as settings antes de
+# qualquer conftest; sem .env (ex.: CI), os testes usam uma fixa. Não
+# sobrescreve a do ambiente.
+env = ["D:SECRET_KEY=test-secret-key"]
+# Atribuídos pela pasta do teste em backend/conftest.py.
+markers = [
+    "unit: teste de unidade (sem banco nem client HTTP)",
+    "integration: teste de integração (banco, client HTTP)",
+]
 
 [build-system]
 requires = ["poetry-core"]
