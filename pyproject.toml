@@ -74,8 +74,9 @@ pythonpath = ["backend"]
 testpaths = ["backend"]
 python_files = ["test_*.py"]
 addopts = "--strict-markers"
-# O base.py exige SECRET_KEY, e importar `config` já o carrega (config/celery.py);
-# sem .env (ex.: CI), os testes usam uma fixa. Não sobrescreve a do ambiente.
+# O base.py exige SECRET_KEY, e o pytest-django carrega as settings antes de
+# qualquer conftest; sem .env (ex.: CI), os testes usam uma fixa. Não
+# sobrescreve a do ambiente.
 env = ["D:SECRET_KEY=test-secret-key"]
 # Atribuídos pela pasta do teste em backend/conftest.py.
 markers = [
