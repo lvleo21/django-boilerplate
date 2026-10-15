@@ -104,6 +104,8 @@ poetry run python backend/manage.py runserver
 
 Com `DEBUG=False`, o Django usa o build do Vite: rode `yarn build` antes.
 
+O `manage.py` usa `config.settings.local` por padrão. Para outro módulo, use `--settings=config.settings.<módulo>` ou `export DJANGO_SETTINGS_MODULE=...`. O `.env` não escolhe o módulo de settings. Em produção, defina o `DJANGO_SETTINGS_MODULE` no ambiente do processo.
+
 ## Testes
 
 Três níveis, separados por pasta, com um assert por teste. As regras estão na seção "Testes" do `CLAUDE.md`.
