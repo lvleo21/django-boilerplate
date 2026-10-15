@@ -1,7 +1,7 @@
 # core
 
 ## Propósito
-Base compartilhada do projeto: model abstrato, admin, storages, templates, traduções e comandos de management usados pelos demais apps.
+Base compartilhada do projeto: model abstrato, admin, storages, templates, traduções e comandos de management usados pelos demais apps. Também guarda a página inicial (`/`, componente `Welcome`), o layout Inertia e o middleware de props compartilhadas do Inertia.
 
 ## Entidades
 - BaseModel: model abstrato base dos demais apps.

@@ -24,6 +24,7 @@ from urllib.parse import quote
 ROOT = Path(__file__).resolve().parent.parent
 ENV_EXAMPLE = ROOT / "backend" / "config" / "settings" / ".env-example"
 PYPROJECT = ROOT / "pyproject.toml"
+PACKAGE_JSON = ROOT / "package.json"
 README = ROOT / "README.md"
 # O Django lê backend/config/settings/.env (local, fora do Docker) e o compose lê
 # .env/.env.local. Os dois recebem os mesmos valores, mudando só o host.
@@ -125,6 +126,18 @@ def update_pyproject(values):
         flags=re.M,
     )
     PYPROJECT.write_text(text, encoding="utf-8")
+
+
+def update_package_json(values):
+    text = PACKAGE_JSON.read_text(encoding="utf-8")
+    text = re.sub(
+        r'^  "name": ".*",$',
+        f'  "name": "{escape(values["slug"])}",',
+        text,
+        count=1,
+        flags=re.M,
+    )
+    PACKAGE_JSON.write_text(text, encoding="utf-8")
 
 
 def update_readme(values):
@@ -322,7 +335,7 @@ def collect():
     project_name = ask("Nome do projeto (aparece no admin, Swagger e README)", default_name)
     default_slug = re.sub(r"[^a-z0-9-]+", "-", project_name.lower()).strip("-")
     slug = ask(
-        "Nome do pacote (pyproject.toml)",
+        "Nome do pacote (pyproject.toml e package.json)",
         default_slug,
         validate=lambda v: bool(SLUG_RE.match(v)),
         hint="Minúsculas, números e hífens, começando por letra.",
@@ -390,7 +403,7 @@ def remove_setup_artifacts():
 
 
 def main():
-    if not all(p.exists() for p in (ENV_EXAMPLE, PYPROJECT, README, DOCKER_COMPOSE)):
+    if not all(p.exists() for p in (ENV_EXAMPLE, PYPROJECT, PACKAGE_JSON, README, DOCKER_COMPOSE)):
         sys.exit("Execute a partir de um clone do boilerplate (arquivos base não encontrados).")
 
     print("Configuração do novo projeto\n")
@@ -406,7 +419,7 @@ def main():
 
     print("\nResumo:")
     print(f"  Nome do projeto: {values['project_name']}")
-    print(f"  Pacote (pyproject): {values['slug']}")
+    print(f"  Pacote (pyproject.toml e package.json): {values['slug']}")
     print(f"  Descrição: {values['description']}")
     print(f"  Autor: {values['author']}")
     print(f"  Banco: {values['db_name']} (usuário {values['db_user']})")
@@ -423,6 +436,8 @@ def main():
     print()
     update_pyproject(values)
     print("  Atualizado: pyproject.toml")
+    update_package_json(values)
+    print("  Atualizado: package.json")
     update_readme(values)
     print("  Atualizado: README.md")
     update_env_example(values)

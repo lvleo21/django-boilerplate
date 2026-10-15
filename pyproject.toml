@@ -25,6 +25,8 @@ redis = "^7.0.1"
 django-celery-beat = "^2.8.1"
 psycopg2-binary = "^2.9.11"
 flower = "^2.0.1"
+inertia-django = "^2.0.0"
+django-vite = "^3.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
