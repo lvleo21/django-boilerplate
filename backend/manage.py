@@ -4,8 +4,6 @@
 import os
 import sys
 
-# Lê o .env (config/__init__.py) antes do padrão abaixo, para que um
-# DJANGO_SETTINGS_MODULE vindo dele vença.
 import config  # noqa: F401
 
 
