@@ -11,6 +11,8 @@ ROOT_DIR = BASE_DIR.parent.parent
 
 env = environ.Env()
 
+environ.Env.read_env(os.path.join(BASE_DIR, "settings/.env"))
+
 
 SECRET_KEY = env("SECRET_KEY")
 
