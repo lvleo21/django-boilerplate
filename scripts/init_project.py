@@ -2,11 +2,11 @@
 """Configura um novo projeto criado a partir deste boilerplate.
 
 Pergunta o nome do projeto, o slug do pacote, a descrição, o autor, o banco e
-a senha, gera a SECRET_KEY e atualiza pyproject.toml, README.md e os arquivos
-de ambiente. Opcionalmente cria a .venv com um Python compatível com o
-pyproject.toml, procurado no PATH, no pyenv, no asdf e no uv. Ao final, remove
-a si mesmo, o alvo `init` do Makefile e a seção do README que explica como
-usá-lo. Use apenas em um clone novo, uma vez.
+a senha, gera a SECRET_KEY, atualiza pyproject.toml e os arquivos de ambiente
+e troca o README.md por um só com o nome do projeto. Opcionalmente cria a .venv
+com um Python compatível com o pyproject.toml, procurado no PATH, no pyenv, no
+asdf e no uv. Ao final, remove a si mesmo, o alvo `init` do Makefile e a capa do
+boilerplate. Use apenas em um clone novo, uma vez.
 
 Uso: python scripts/init_project.py
 """
@@ -26,6 +26,7 @@ ENV_EXAMPLE = ROOT / "backend" / "config" / "settings" / ".env-example"
 PYPROJECT = ROOT / "pyproject.toml"
 PACKAGE_JSON = ROOT / "package.json"
 README = ROOT / "README.md"
+COVER = ROOT / ".github" / "assets" / "django-boilerplate-cover.webp"
 # O Django lê backend/config/settings/.env (local, fora do Docker) e o compose lê
 # .env/.env.local. Os dois recebem os mesmos valores, mudando só o host.
 ENV_TARGETS = {
@@ -36,7 +37,6 @@ DOCKER_COMPOSE = ROOT / "docker-compose.yml"
 VENV = ROOT / ".venv"
 PYTHON_CONSTRAINT_RE = re.compile(r'^python = "\^(\d+)\.(\d+)', re.M)
 PYTHON_BINARY_RE = re.compile(r"^python3(\.\d+)?$")
-TEMPLATE_DESCRIPTION = re.compile(r"^Este projeto de boilerplate.*$", re.M)
 SLUG_RE = re.compile(r"^[a-z][a-z0-9-]*$")
 DB_NAME_RE = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 CONTAINER_PREFIX_RE = re.compile(r"^[a-z][a-z0-9_]*$")
@@ -141,10 +141,7 @@ def update_package_json(values):
 
 
 def update_readme(values):
-    text = README.read_text(encoding="utf-8")
-    text = re.sub(r"^# .*$", f"# {values['project_name']}", text, count=1, flags=re.M)
-    text = TEMPLATE_DESCRIPTION.sub(lambda _: values["description"], text, count=1)
-    README.write_text(text, encoding="utf-8")
+    README.write_text(f"# {values['project_name']}\n", encoding="utf-8")
 
 
 def update_docker_compose(values):
@@ -381,7 +378,7 @@ def collect():
 
 def remove_setup_artifacts():
     # Depois de configurado, o projeto não precisa mais do script, do alvo
-    # `make init` nem da seção de instruções do README.
+    # `make init` nem da capa do boilerplate.
     makefile = ROOT / "Makefile"
     if makefile.exists():
         text = makefile.read_text(encoding="utf-8")
@@ -389,16 +386,13 @@ def remove_setup_artifacts():
         makefile.write_text(text.rstrip("\n") + "\n", encoding="utf-8")
         print("  Removido: alvo init do Makefile")
 
-    text = README.read_text(encoding="utf-8")
-    text = re.sub(
-        r"## Criando um novo projeto\n.*?(?=^## )",
-        "",
-        text,
-        count=1,
-        flags=re.M | re.S,
-    )
-    README.write_text(text, encoding="utf-8")
-    print("  Removido: seção 'Criando um novo projeto' do README")
+    if COVER.exists():
+        COVER.unlink()
+        print(f"  Removido: {COVER.relative_to(ROOT)}")
+        for folder in (COVER.parent, COVER.parent.parent):
+            if folder.exists() and not any(folder.iterdir()):
+                folder.rmdir()
+                print(f"  Removido: pasta {folder.relative_to(ROOT)}/ (vazia)")
 
     scripts_dir = Path(__file__).resolve().parent
     Path(__file__).resolve().unlink()
@@ -450,7 +444,7 @@ def main():
     update_package_json(values)
     print("  Atualizado: package.json")
     update_readme(values)
-    print("  Atualizado: README.md")
+    print("  Atualizado: README.md (só com o nome do projeto)")
     update_env_example(values)
     print("  Atualizado: backend/config/settings/.env-example")
     update_docker_compose(values)

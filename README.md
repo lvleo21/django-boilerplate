@@ -1,4 +1,4 @@
-![django-boilerplate: boilerplate para projetos Django com Inertia.js](.github/assets/django-boilerplate-cover.png)
+![django-boilerplate: boilerplate para projetos Django com Inertia.js](.github/assets/django-boilerplate-cover.webp)
 
 # Django Boilerplate
 
@@ -12,11 +12,11 @@ Para usar este repositório como base de um projeto novo, rode uma vez no clone:
 make init
 ```
 
-O script pergunta o nome do projeto, o nome do pacote, a descrição, o autor, o banco de dados (nome, usuário e senha) e o prefixo dos containers Docker, e gera a `SECRET_KEY`. Depois atualiza `pyproject.toml`, `package.json`, `docker-compose.yml`, este README e os arquivos de ambiente (`backend/config/settings/.env` e `.env/.env.local`). Esses arquivos de ambiente não vão para o git.
+O script pergunta o nome do projeto, o nome do pacote, a descrição, o autor, o banco de dados (nome, usuário e senha) e o prefixo dos containers Docker, e gera a `SECRET_KEY`. Depois atualiza `pyproject.toml`, `package.json`, `docker-compose.yml` e os arquivos de ambiente (`backend/config/settings/.env` e `.env/.env.local`). Esses arquivos de ambiente não vão para o git.
 
 O script também oferece criar a `.venv` local. Ele procura um Python compatível com o `pyproject.toml` no `PATH`, no pyenv, no asdf e no uv. Se não encontrar, explica qual versão instalar e não altera nada.
 
-Ao final, o script remove a si mesmo, o alvo `make init` e esta seção do README.
+Ao final, troca este README por um só com o nome do projeto (`# <Nome do projeto>`) e remove a si mesmo, o alvo `make init` e a capa do boilerplate (`.github/assets/`).
 
 ## Stack
 
