@@ -4,8 +4,6 @@
 import os
 import sys
 
-import config  # noqa: F401
-
 
 def main():
     """Run administrative tasks."""

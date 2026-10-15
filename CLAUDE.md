@@ -13,6 +13,12 @@
 - `frontend/`: código React/Inertia (alias `@`). Ver Frontend.
 - Raiz: ferramentas e configuração compartilhadas (`pyproject.toml`, `poetry.lock`, `package.json`, `yarn.lock`, `vite.config.ts`, `tsconfig.json`, `components.json`, `i18next.config.ts`, `playwright.config.ts`, `e2e/`, `Makefile`, `docker-compose.yml`, `compose/`, `scripts/`, `.agents/`). Comandos rodam a partir da raiz: `python backend/manage.py <comando>`. No Docker, o diretório de trabalho já é `backend/`.
 
+## Settings
+
+- O módulo de settings (`config/settings/`) é escolhido pelo `DJANGO_SETTINGS_MODULE`, vindo do ambiente do processo (`env_file` do compose, plataforma de deploy, shell) ou de `--settings`.
+- Os padrões nos pontos de entrada valem só para desenvolvimento: `manage.py` e `config/celery.py` usam `config.settings.local`; `wsgi.py` e `asgi.py`, `config.settings.prod`. Em produção, definir o `DJANGO_SETTINGS_MODULE` sempre de forma explícita.
+- O `.env` local (`config/settings/.env`) é lido só no `base.py`, para as demais variáveis; ele não escolhe o módulo de settings.
+
 ## Organização de um app
 
 Organizar por domínio (um app por contexto), e dentro de cada app por camada. Começar com arquivo único (`models.py`, `services.py`…) e virar pacote quando crescer (~400–500 linhas). Exceção: `choices.py` existe desde o início em todo app.
